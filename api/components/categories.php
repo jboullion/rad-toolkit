@@ -3,7 +3,7 @@
  * Return all categories
  */
 
-require_once('../setup.php');
+require_once '../setup.php';
 
 require_once './Component.php';
 

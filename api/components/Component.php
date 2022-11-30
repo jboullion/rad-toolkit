@@ -43,20 +43,12 @@ class Component {
 			$component_stmt->execute();
 
 			$components = [];
-			$component_ids = [];
 			while ($component = $component_stmt->fetchObject()){
 				$component->properties = json_decode($component->properties);
-				$components[$component->component_id] = $component;
-				$component_ids[] = $component->component_id;
+				$components[] = $component;
 			}
 
-			// To get JSON output, we need to convert the object to an array
-			$returnComponents = [];
-			foreach($components as $component){
-				$returnComponents[] = $component;
-			}
-
-			return $returnComponents;
+			return $components;
 
 		} catch (PDOException $e) {
 			return false;
