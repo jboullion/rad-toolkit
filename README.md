@@ -1,4 +1,6 @@
-# default
+# Semiconductor Radiation Toolkit
+
+The Semiconductor Radiation Toolkit (aka Rad Toolkit) is a tool created to make filtering and searching for various aerospace parts easier.
 
 ## Project setup
 
