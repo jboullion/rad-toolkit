@@ -5,15 +5,15 @@ export const basicProperties: ComponentTableProps[] = [
   { title: "Name", sortProperty: "name" },
   { title: "Part #", sortProperty: "partnum" },
   { title: "Manufacturer", sortProperty: "manufacturer" },
-  { title: "Category", sortProperty: "category_name" },
-  { title: "URL", sortProperty: "url" },
-  { title: "Description", sortProperty: "description" },
+  //{ title: "Category", sortProperty: "category_name" },
+  //{ title: "URL", sortProperty: "url" },
+  //{ title: "Description", sortProperty: "description" },
 ];
 
 export const commonProperties: ComponentTableProps[] = [
   { title: "Package", sortProperty: "package" },
   { title: "Process Node", sortProperty: "process_node" },
-  { title: "Qualification", sortProperty: "qualification" },
+  { title: "Qualifications", sortProperty: "qualifications" },
   { title: "Voltage", sortProperty: "voltage" },
   { title: "Cost", sortProperty: "cost" },
 ];

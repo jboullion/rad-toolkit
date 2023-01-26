@@ -182,25 +182,45 @@ function setupComponent(component: Component) {
   showComponent.value = true;
 }
 
+/**
+ * Populate our filter options based on the components properties.
+ *
+ * This allows us to have a dynamic filter list based on the components, although it is a little complicated
+ */
 function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
+  // loop through each component and add the options to the filters
   components.value.forEach((component) => {
+    // loop through each filter and add the options
     newFilters.forEach((filter) => {
+      // check if the component has the property
       if (component.properties[filter.key as keyof ComponentProperties]) {
+        // get the value of this property for this filter
         const value = component.properties[
           filter.key as keyof ComponentProperties
         ] as string;
+
+        // check if the value is already in the options
         if (!filter.options.includes(value)) {
-          // split on comma and add each value
-          value.split(",").forEach((val) => {
-            if (!filter.options.includes(val.trim())) {
-              filter.options.push(val.trim());
-            }
-          });
+          if (filter.key !== "cores") {
+            // split on comma and add each value
+            value.split(",").forEach((val) => {
+              if (!filter.options.includes(val.trim())) {
+                filter.options.push(val.trim());
+              }
+            });
+          } else {
+            // add the value
+            filter.options.push(value.trim());
+          }
         }
       }
+
+      // sort the options
+      filter.options.sort();
     });
   });
 
+  // remove any filters that have no options
   newFilters = newFilters.filter((filter) => filter.options.length > 0);
 
   return newFilters;
@@ -221,12 +241,25 @@ function filterComponents(
     if (filters) {
       Object.keys(filters).forEach((key) => {
         if (filters[key] && filters[key].length > 0) {
-          if (
-            !component.properties[key as keyof ComponentProperties].includes(
-              filters[key]
-            )
-          ) {
-            matches = false;
+          if (key === "cores") {
+            if (
+              !filters[key].includes(
+                component.properties[key as keyof ComponentProperties]
+              )
+            ) {
+              matches = false;
+            }
+          } else {
+            const componentPropertiesArr =
+              component.properties[key as keyof ComponentProperties].split(",");
+
+            if (
+              !componentPropertiesArr.some((prop) =>
+                filters[key].includes(prop.trim())
+              )
+            ) {
+              matches = false;
+            }
           }
         }
       });
@@ -342,11 +375,19 @@ async function updateCategory(category: number) {
 </script>
 
 <style>
+.v-container {
+  padding-top: 40px;
+}
+
 .pointer {
   cursor: pointer;
 }
 
 .white--text {
   color: white !important;
+}
+
+.v-footer {
+  min-height: 120px;
 }
 </style>

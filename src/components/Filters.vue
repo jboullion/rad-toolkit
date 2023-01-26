@@ -35,9 +35,16 @@
     </v-row>
   </div>
 
-  <div v-if="showFilters" class="mb-4">
+  <div v-if="showFilters" class="mb-5">
     <v-row>
       <v-col cols="12" sm="4" v-for="(filter, index) in categoryFilters">
+        <!-- <range-slider
+          v-if="filter.name == 'Voltage'"
+          :min="0"
+          :max="10"
+          v-model="selectedCategoryFilters[filter.key]"
+          @update:modelValue="filterComponents"
+        ></range-slider> -->
         <v-select
           v-model="selectedCategoryFilters[filter.key]"
           :items="filter.options"
@@ -45,6 +52,7 @@
           variant="outlined"
           density="compact"
           clearable
+          multiple
           @update:modelValue="filterComponents"
         >
         </v-select>
@@ -55,6 +63,7 @@
 
 <script setup lang="ts">
 import { CategoryFilter, ComponentCategory } from "@/types/components";
+import RangeSlider from "@/components/RangeSlider.vue";
 import { onBeforeMount, ref } from "vue";
 
 const props = defineProps<{
@@ -73,7 +82,7 @@ const emit = defineEmits<{
 const categoryItems = ref<{ title: string; value: number }[]>([]);
 const selectedCategory = ref<number>();
 
-const selectedCategoryFilters = ref<{ [key: string]: string[] }>({});
+const selectedCategoryFilters = ref<{ [key: string]: any[] }>({});
 
 const search = ref("");
 const showFilters = ref(false);
@@ -91,7 +100,10 @@ function updateCategory(newCategory: number) {
 }
 
 function filterComponents() {
+  // console.log("filterComponents", selectedCategoryFilters.value);
+
   if (!selectedCategory.value) selectedCategoryFilters.value = {};
+
   emit("filter", selectedCategoryFilters.value, search.value);
 }
 </script>

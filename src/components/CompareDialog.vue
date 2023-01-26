@@ -132,6 +132,17 @@ watch(
   > tbody
   > tr
   > td:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.v-theme--dark
+  #compare
+  .v-table
+  > .v-table__wrapper
+  > table
+  > tbody
+  > tr
+  > td:nth-child(even) {
   background-color: #333;
 }
 </style>

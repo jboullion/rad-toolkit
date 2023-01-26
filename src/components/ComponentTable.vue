@@ -49,7 +49,12 @@
           :class="`component__${property.sortProperty}`"
           @click="$emit('showComponent', component)"
         >
-          <p v-if="property.sortProperty !== 'url'">
+          <p
+            v-if="
+              property.sortProperty !== 'name' &&
+              property.sortProperty !== 'partnum'
+            "
+          >
             {{ component[property.sortProperty as keyof typeof component] }}
           </p>
           <a v-else :href="component.url" target="_blank" @click.stop>{{
@@ -102,6 +107,10 @@ const selectedComponents = ref<string[]>([]);
 </script>
 
 <style>
+.v-table {
+  margin: 50px 0;
+}
+
 .v-table .v-table__wrapper {
   max-height: 80vh;
   overflow-y: auto;
