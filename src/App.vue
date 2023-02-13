@@ -12,7 +12,9 @@
           @filter="filterComponents"
           @updateCategory="updateCategory"
           @filterCategories="filterCategories"
+          @export="exportComponents"
         />
+
         <KeepAlive>
           <ComponentTable
             :components="filteredComponents"
@@ -210,8 +212,6 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
         const value: string | [] =
           component.properties[filter.key as keyof ComponentProperties];
 
-        console.log("value", value, typeof value);
-
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
           if (filter.key !== "cores") {
@@ -226,14 +226,14 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
               filter.options.push(value);
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
-              value.map((val) => {
+              value.map((val: string) => {
                 const cleanVal = typeof val === "string" ? val.trim() : val;
                 if (!filter.options.includes(cleanVal)) {
                   filter.options.push(cleanVal);
                 }
               });
             } else {
-              console.log("value is of unknown type", value);
+              console.error("value is of unknown type", value);
             }
           } else {
             // add the value
@@ -245,8 +245,6 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
       // sort the options
       filter.options.sort();
     });
-
-    console.log("filter.options", newFilters);
   });
 
   // remove any filters that have no options
@@ -411,6 +409,60 @@ async function updateCategory(category: number) {
   filteredComponents.value = components.value;
 
   loading.value = false;
+}
+
+/**
+ * EXPORT
+ */
+function arrayToCsv(data: any[]): string {
+  let headers = Object.keys(data[0]);
+
+  const headerString =
+    headers
+      .map(String)
+      .map((v: string) => v.replaceAll('"', '""'))
+      .map((v: string) => `"${v}"`)
+      .join(",") + "\r\n";
+
+  return (
+    headerString +
+    data
+      .map((row) => {
+        return Object.values(row)
+          .map(String)
+          .map((v: string) => v.replaceAll('"', '""'))
+          .map((v: string) => `"${v}"`)
+          .join(",");
+      })
+      .join("\r\n")
+  );
+}
+
+function exportComponents() {
+  const filteredComponentArray = JSON.parse(
+    JSON.stringify(filteredComponents.value)
+  );
+
+  // extract the properties from the components
+  filteredComponentArray.forEach((component: any) => {
+    //component.properties = Object.values(component.properties);
+    Object.keys(component.properties).forEach((key) => {
+      const value = component.properties[key as keyof ComponentProperties];
+      component[key] = value;
+    });
+
+    delete component.properties;
+  });
+
+  const content = arrayToCsv(filteredComponentArray);
+  var blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  var url = URL.createObjectURL(blob);
+
+  // Create a link to download it
+  var pom = document.createElement("a");
+  pom.href = url;
+  pom.setAttribute("download", "SRT_export.csv");
+  pom.click();
 }
 </script>
 

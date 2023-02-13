@@ -22,7 +22,7 @@
           @input="$emit('search', search)"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="4" v-if="categoryFilters.length">
+      <v-col cols="12" sm="2" v-if="categoryFilters.length">
         <v-btn
           color="red"
           :variant="showFilters ? 'tonal' : 'flat'"
@@ -30,6 +30,11 @@
           block
         >
           Filters <v-icon large class="ml-2"> mdi-filter </v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="12" sm="2" v-if="categoryFilters.length">
+        <v-btn color="red" variant="flat" @click="$emit('export')" block>
+          Download <v-icon large class="ml-2"> mdi-download </v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -75,6 +80,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: "search", ...args: any[]): void;
   (event: "filter", ...args: any[]): void;
+  (event: "export", ...args: any[]): void;
   (event: "updateCategory", ...args: any[]): void;
   (event: "filterCategories", ...args: any[]): void;
 }>();
