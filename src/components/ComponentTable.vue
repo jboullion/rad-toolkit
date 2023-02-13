@@ -68,11 +68,7 @@
           @click="$emit('showComponent', component)"
         >
           <p>
-            {{
-              component.properties[
-                property.sortProperty as keyof ComponentProperties
-              ]
-            }}
+            {{ displayComponentProperty(component, property.sortProperty) }}
           </p>
         </td>
       </tr>
@@ -103,7 +99,21 @@ defineEmits<{
 
 const selectedComponents = ref<string[]>([]);
 
-// Package	Process Node	Qualifications	Voltage	Cost	Type
+function displayComponentProperty(
+  component: Component,
+  property: string
+): string {
+  const rawProperty =
+    component.properties[property as keyof ComponentProperties];
+
+  if (!rawProperty) return "";
+
+  if (Array.isArray(rawProperty)) {
+    return rawProperty.join(", ");
+  }
+
+  return rawProperty.toString();
+}
 </script>
 
 <style>
@@ -127,6 +137,7 @@ const selectedComponents = ref<string[]>([]);
   background: rgb(var(--v-theme-surface));
   min-width: 80px;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .component__compare > .v-input {
@@ -134,13 +145,13 @@ const selectedComponents = ref<string[]>([]);
   justify-content: center;
 }
 
-.component__manufacturer {
+/* .component__manufacturer {
   min-width: 200px;
 }
 
 .component__name {
   min-width: 300px;
-}
+} */
 
 .component__description {
   min-width: 500px;

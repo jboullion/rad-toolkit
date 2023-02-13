@@ -195,19 +195,34 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
       // check if the component has the property
       if (component.properties[filter.key as keyof ComponentProperties]) {
         // get the value of this property for this filter
-        const value = component.properties[
-          filter.key as keyof ComponentProperties
-        ] as string;
+        const value: string | [] =
+          component.properties[filter.key as keyof ComponentProperties];
+
+        console.log("value", value, typeof value);
 
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
           if (filter.key !== "cores") {
-            // split on comma and add each value
-            value.split(",").forEach((val) => {
-              if (!filter.options.includes(val.trim())) {
-                filter.options.push(val.trim());
-              }
-            });
+            if (typeof value === "string") {
+              // split on comma and add each value
+              value.split(",").forEach((val) => {
+                if (!filter.options.includes(val.trim())) {
+                  filter.options.push(val.trim());
+                }
+              });
+            } else if (typeof value === "number") {
+              filter.options.push(value);
+            } else if (Array.isArray(value) || typeof value === "object") {
+              // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
+              value.map((val) => {
+                const cleanVal = typeof val === "string" ? val.trim() : val;
+                if (!filter.options.includes(cleanVal)) {
+                  filter.options.push(cleanVal);
+                }
+              });
+            } else {
+              console.log("value is of unknown type", value);
+            }
           } else {
             // add the value
             filter.options.push(value.trim());
@@ -218,6 +233,8 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
       // sort the options
       filter.options.sort();
     });
+
+    console.log("filter.options", newFilters);
   });
 
   // remove any filters that have no options
@@ -240,18 +257,29 @@ function filterComponents(
     // check filters
     if (filters) {
       Object.keys(filters).forEach((key) => {
+        const componentProperty =
+          component.properties[key as keyof ComponentProperties];
+        let componentPropertiesArr: string[] = [];
+
         if (filters[key] && filters[key].length > 0) {
           if (key === "cores") {
-            if (
-              !filters[key].includes(
-                component.properties[key as keyof ComponentProperties]
-              )
-            ) {
+            if (!filters[key].includes(componentProperty)) {
               matches = false;
             }
           } else {
-            const componentPropertiesArr =
-              component.properties[key as keyof ComponentProperties].split(",");
+            if (typeof componentProperty === "string") {
+              componentPropertiesArr = componentProperty.split(",");
+            } else if (
+              Array.isArray(typeof componentProperty) ||
+              typeof componentProperty === "object"
+            ) {
+              componentPropertiesArr = componentProperty;
+            } else {
+              console.error(
+                "componentProperty is neither string or array",
+                componentProperty
+              );
+            }
 
             if (
               !componentPropertiesArr.some((prop) =>
