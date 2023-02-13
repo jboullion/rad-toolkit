@@ -87,7 +87,11 @@ import {
   fpgaProperties,
   microcontrollerProperties,
   microProcessorProperties,
+  memoryProperties,
   socProperties,
+  voltageRegulatorProperties,
+  SBCProperties,
+  interfaceICProperties,
 } from "./properties";
 import {
   commonFilters,
@@ -123,14 +127,22 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
     return commonProperties;
 
   switch (currentCategory.value.name) {
+    case "System On Chip (SoC)":
+      return commonProperties.concat(socProperties);
     case "Microprocessors":
       return commonProperties.concat(microProcessorProperties);
     case "Microcontrollers":
       return commonProperties.concat(microcontrollerProperties);
-    case "System On Chip (SoC)":
-      return commonProperties.concat(socProperties);
     case "FPGAs":
       return commonProperties.concat(fpgaProperties);
+    case "Memory":
+      return commonProperties.concat(memoryProperties);
+    case "Voltage Regulators":
+      return commonProperties.concat(voltageRegulatorProperties);
+    case "SBCs":
+      return commonProperties.concat(SBCProperties);
+    case "Interface ICs":
+      return commonProperties.concat(interfaceICProperties);
   }
 
   return commonProperties;
