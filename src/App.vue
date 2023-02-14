@@ -106,6 +106,10 @@ import {
   microControllerFilters,
   microProcessorFilters,
   socFilters,
+  memoryFilters,
+  voltageRegulatorFilters,
+  SBCFilters,
+  interfaceICFilters,
 } from "./filters";
 
 const theme = ref("dark");
@@ -173,7 +177,22 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
     case "FPGAs":
       buildFilters = buildFilters.concat(fpgaFilters.value);
       break;
+    case "Memory":
+      buildFilters = buildFilters.concat(memoryFilters.value);
+      break;
+    case "Voltage Regulators":
+      buildFilters = buildFilters.concat(voltageRegulatorFilters.value);
+      break;
+    case "SBCs":
+      buildFilters = buildFilters.concat(SBCFilters.value);
+      break;
+    case "Interface ICs":
+      buildFilters = buildFilters.concat(interfaceICFilters.value);
+      break;
+    default:
   }
+
+  buildFilters.forEach((filter) => (filter.options = []));
 
   buildFilters = populateFilterOptions(buildFilters);
 

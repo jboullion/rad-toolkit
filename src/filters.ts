@@ -6,6 +6,9 @@ import {
   microcontrollerProperties,
   microProcessorProperties,
   socProperties,
+  voltageRegulatorProperties,
+  SBCProperties,
+  interfaceICProperties,
 } from "./properties";
 import { CategoryFilter } from "./types/components";
 
@@ -21,16 +24,6 @@ export const commonFilters = computed<CategoryFilter[]>(() => {
 
 export const microProcessorFilters = computed<CategoryFilter[]>(() => {
   return microProcessorProperties.map((prop) => {
-    return {
-      name: prop.title,
-      key: prop.sortProperty,
-      options: [],
-    };
-  });
-});
-
-export const memoryFilters = computed<CategoryFilter[]>(() => {
-  return memoryProperties.map((prop) => {
     return {
       name: prop.title,
       key: prop.sortProperty,
@@ -61,6 +54,46 @@ export const socFilters = computed<CategoryFilter[]>(() => {
 
 export const fpgaFilters = computed<CategoryFilter[]>(() => {
   return fpgaProperties.map((prop) => {
+    return {
+      name: prop.title,
+      key: prop.sortProperty,
+      options: [],
+    };
+  });
+});
+
+export const memoryFilters = computed<CategoryFilter[]>(() => {
+  return memoryProperties.map((prop) => {
+    return {
+      name: prop.title,
+      key: prop.sortProperty,
+      options: [],
+    };
+  });
+});
+
+export const voltageRegulatorFilters = computed<CategoryFilter[]>(() => {
+  return voltageRegulatorProperties.map((prop) => {
+    return {
+      name: prop.title,
+      key: prop.sortProperty,
+      options: [],
+    };
+  });
+});
+
+export const SBCFilters = computed<CategoryFilter[]>(() => {
+  return SBCProperties.map((prop) => {
+    return {
+      name: prop.title,
+      key: prop.sortProperty,
+      options: [],
+    };
+  });
+});
+
+export const interfaceICFilters = computed<CategoryFilter[]>(() => {
+  return interfaceICProperties.map((prop) => {
     return {
       name: prop.title,
       key: prop.sortProperty,
