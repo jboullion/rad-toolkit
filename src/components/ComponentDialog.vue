@@ -26,9 +26,7 @@
             </tr>
 
             <tr v-for="property in properties" :key="property.sortProperty">
-              <th>
-                {{ property.title }}
-              </th>
+              <th>{{ property.title }} {{ property.unit }}</th>
               <td>
                 <p>
                   {{

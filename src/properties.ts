@@ -6,7 +6,7 @@ export const basicProperties: ComponentTableProps[] = [
   { title: "Part #", sortProperty: "partnum" },
   { title: "Manufacturer", sortProperty: "manufacturer" },
   //{ title: "Category", sortProperty: "category_name" },
-  //{ title: "URL", sortProperty: "url" },
+  { title: "URL", sortProperty: "url" },
   //{ title: "Description", sortProperty: "description" },
 ];
 
@@ -14,10 +14,14 @@ export const commonProperties: ComponentTableProps[] = [
   { title: "Package", sortProperty: "package" },
   { title: "Process Node", sortProperty: "process_node" },
   { title: "Qualifications", sortProperty: "qualifications" },
-  { title: "Voltage", sortProperty: "voltage" },
+  { title: "Voltage", unit: "(V)", sortProperty: "voltage" },
   { title: "Cost", sortProperty: "cost" },
-  { title: "Total Dose", sortProperty: "total_dose" },
-  { title: "LUT Threshold", sortProperty: "lut_threshold" },
+  { title: "Total Dose", unit: "(Rad)", sortProperty: "total_dose" },
+  {
+    title: "LUT Threshold",
+    unit: "(MeV-cm2/mg)",
+    sortProperty: "lut_threshold",
+  },
 ];
 
 // System On Chip (SoC)

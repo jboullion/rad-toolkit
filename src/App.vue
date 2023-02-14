@@ -488,4 +488,8 @@ function exportComponents() {
 .v-footer {
   min-height: 120px;
 }
+
+a {
+  color: #f44336;
+}
 </style>

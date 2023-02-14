@@ -12,19 +12,13 @@
             {{ selectedComponents.length }}</v-btn
           >
         </th>
-        <th
-          v-for="property in basicProperties"
-          class="text-left"
-          @click="$emit('sort', property.sortProperty)"
-        >
-          {{ property.title }}
-        </th>
+        <th class="text-left" @click="$emit('sort', 'name')">Name</th>
         <th
           v-for="property in properties"
           class="text-left"
           @click="$emit('sort', property.sortProperty)"
         >
-          {{ property.title }}
+          {{ property.title }} {{ property.unit }}
         </th>
       </tr>
     </thead>
@@ -44,22 +38,22 @@
           ></v-checkbox>
         </td>
         <td
-          v-for="property in basicProperties"
-          class="pointer"
-          :class="`component__${property.sortProperty}`"
+          class="pointer component__name py-2"
           @click="$emit('showComponent', component)"
         >
-          <p
-            v-if="
-              property.sortProperty !== 'name' &&
-              property.sortProperty !== 'partnum'
-            "
-          >
-            {{ component[property.sortProperty as keyof typeof component] }}
-          </p>
-          <a v-else :href="component.url" target="_blank" @click.stop>{{
-            component[property.sortProperty as keyof typeof component]
-          }}</a>
+          <h3>
+            <a
+              v-if="component.url"
+              :href="component.url"
+              target="_blank"
+              @click.stop
+              >{{ component.name }}</a
+            >
+            <span v-else>{{ component.name }}</span>
+          </h3>
+          <span><b>Part #:</b> {{ component.partnum }}</span
+          ><br />
+          <span><b>Manufacturer:</b> {{ component.manufacturer }}</span>
         </td>
         <td
           v-for="property in properties"
@@ -145,13 +139,9 @@ function displayComponentProperty(
   justify-content: center;
 }
 
-/* .component__manufacturer {
-  min-width: 200px;
-}
-
 .component__name {
-  min-width: 300px;
-} */
+  white-space: nowrap;
+}
 
 .component__description {
   min-width: 500px;

@@ -14,6 +14,7 @@ export type Component = {
 
 export type ComponentTableProps = {
   title: string;
+  unit?: string;
   sortProperty: string;
   sortAscending?: boolean | null;
   //onSort: (sortProperty: string, sortAscending: boolean) => void;
