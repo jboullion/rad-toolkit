@@ -65,6 +65,11 @@
 
 <script setup lang="ts">
 /**
+ * TODO:
+ *
+ * 1. Setup category constants instead of using strings
+ */
+/**
  * WANTS:
  * - Skeletal loading
  */
@@ -226,6 +231,7 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
               filter.options.push(value);
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
+              // @ts-ignore
               value.map((val: string) => {
                 const cleanVal = typeof val === "string" ? val.trim() : val;
                 if (!filter.options.includes(cleanVal)) {

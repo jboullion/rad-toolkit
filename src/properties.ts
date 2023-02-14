@@ -16,6 +16,8 @@ export const commonProperties: ComponentTableProps[] = [
   { title: "Qualifications", sortProperty: "qualifications" },
   { title: "Voltage", sortProperty: "voltage" },
   { title: "Cost", sortProperty: "cost" },
+  { title: "Total Dose", sortProperty: "total_dose" },
+  { title: "LUT Threshold", sortProperty: "lut_threshold" },
 ];
 
 // System On Chip (SoC)
@@ -45,8 +47,6 @@ export const memoryProperties: ComponentTableProps[] = [
   { title: "Clock Speed", sortProperty: "clock_speed" },
   { title: "Memory Type", sortProperty: "memory_type" },
   { title: "Memory Format", sortProperty: "memory_format" },
-  { title: "Total Dose", sortProperty: "total_dose" },
-  { title: "LUT Threshold", sortProperty: "lut_threshold" },
 ];
 
 export const voltageRegulatorProperties: ComponentTableProps[] = [];
