@@ -8,7 +8,6 @@
           :categories="categories"
           :category-filters="categoryFilters"
           :current-category="currentCategory"
-          @search="searchComponents"
           @filter="filterComponents"
           @updateCategory="updateCategory"
           @filterCategories="filterCategories"
@@ -116,6 +115,7 @@ import {
 const theme = ref("dark");
 const compare = ref(false);
 const loading = ref(false);
+const search = ref("");
 
 function toggleTheme() {
   theme.value = theme.value === "light" ? "dark" : "light";
@@ -206,6 +206,22 @@ onMounted(async () => {
   categories.value = await cat_response.json();
 
   loading.value = false;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = Number(urlParams.get("category"));
+  search.value = urlParams.get("search") || "";
+  const keys = urlParams.keys();
+
+  if (category) {
+    await updateCategory(category);
+
+    // let filters: { [key: string]: string } = {};
+    // for (const key of keys) {
+    //   if (key !== "category" && key !== "search") {
+    //     filters[key] = urlParams.get(key)?.toString() || "";
+    //   }
+    // }
+  }
 });
 
 function setupComponent(component: Component) {
@@ -274,11 +290,15 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 /**
  * SEARCH
  */
-// const throttledSearch = useThrottleFn(searchComponents, 250);
+// const throttledSearch = useThrottleFn(filterComponents, 250);
 function filterComponents(
   filters: { [key: string]: string } = {},
   search: string = ""
 ) {
+  // Update our URL with the new filters
+  updateURLParameter(filters, search);
+
+  // filter current catrgory components
   filteredComponents.value = components.value.filter((component) => {
     let matches = true;
 
@@ -297,6 +317,8 @@ function filterComponents(
           } else {
             if (typeof componentProperty === "string") {
               componentPropertiesArr = componentProperty.split(",");
+            } else if (typeof componentProperty === "number") {
+              componentPropertiesArr = [componentProperty.toString()];
             } else if (
               Array.isArray(typeof componentProperty) ||
               typeof componentProperty === "object"
@@ -321,6 +343,10 @@ function filterComponents(
       });
     }
 
+    if (!matches) {
+      return false;
+    }
+
     // check search
     if (search.length > 0) {
       // Search for the search term in the common properties
@@ -332,26 +358,20 @@ function filterComponents(
         return false;
       });
 
-      if (matches) return matches;
-
-      // Search for the search term in the current category properties
-      matches = Object.keys(component.properties).some((key) => {
-        const value = component.properties[key as keyof ComponentProperties];
-        if (typeof value === "string") {
-          return value.toLowerCase().includes(search);
-        }
-        return false;
-      });
+      if (!matches) {
+        // Search for the search term in the current category properties
+        matches = Object.keys(component.properties).some((key) => {
+          const value = component.properties[key as keyof ComponentProperties];
+          if (typeof value === "string") {
+            return value.toLowerCase().includes(search);
+          }
+          return false;
+        });
+      }
     }
 
     return matches;
   });
-
-  updateFilterURL();
-}
-
-function searchComponents(search: string) {
-  filterComponents({}, search);
 }
 
 function filterCategories(selectedCategory: number) {
@@ -429,6 +449,8 @@ async function updateCategory(category: number) {
   filteredComponents.value = components.value;
 
   loading.value = false;
+
+  //updateURLParameter({}, search.value);
 }
 
 /**
@@ -488,19 +510,32 @@ function exportComponents() {
 /**
  * URL Update
  */
-function updateFilterURL() {
-  var url = new URL("http://demourl.com/path?topic=main");
-  var search_params = url.searchParams;
+function updateURLParameter(
+  filters: { [key: string]: string } = {},
+  search: string = ""
+) {
+  if (!currentCategory.value) return;
 
-  search_params.append("id", "101");
-  search_params.append("id", "102");
+  console.log("updateURLParameter", filters, search);
 
-  url.search = search_params.toString();
+  var newUrl = location.protocol + "//" + location.host + location.pathname;
 
-  var new_url = url.toString();
+  newUrl += "?category=" + currentCategory.value.category_id;
 
-  // output : http://demourl.com/path?id=100&id=101&id=102&topic=main
-  console.log(new_url);
+  if (search.length > 0) {
+    newUrl += "&search=" + search;
+  }
+
+  // check filters
+  if (filters) {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key].length > 0) {
+        newUrl += "&" + key + "=" + filters[key];
+      }
+    });
+  }
+
+  window.history.replaceState("", "", newUrl);
 }
 </script>
 

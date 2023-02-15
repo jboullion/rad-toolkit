@@ -19,7 +19,7 @@
           label="Search"
           density="compact"
           append-inner-icon="mdi-magnify"
-          @input="$emit('search', search)"
+          @input="filterComponents"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="2" v-if="categoryFilters.length">
@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import { CategoryFilter, ComponentCategory } from "@/types/components";
 import RangeSlider from "@/components/RangeSlider.vue";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 const props = defineProps<{
   categories: ComponentCategory[];
@@ -78,7 +78,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: "search", ...args: any[]): void;
   (event: "filter", ...args: any[]): void;
   (event: "export", ...args: any[]): void;
   (event: "updateCategory", ...args: any[]): void;
@@ -101,13 +100,31 @@ onBeforeMount(() => {
   selectedCategory.value = props.currentCategory?.category_id;
 });
 
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  search.value = urlParams.get("search") || "";
+  const keys = urlParams.keys();
+
+  let filters: { [key: string]: string } = {};
+  for (const key of keys) {
+    if (key !== "category" && key !== "search") {
+      filters[key] = urlParams.get(key)?.toString() || "";
+      selectedCategoryFilters.value[key] = filters[key]?.split(",");
+    }
+  }
+
+  if (selectedCategoryFilters.value.length) {
+    showFilters.value = true;
+  }
+
+  emit("filter", selectedCategoryFilters.value, search.value);
+});
+
 function updateCategory(newCategory: number) {
   emit("updateCategory", newCategory);
 }
 
 function filterComponents() {
-  // console.log("filterComponents", selectedCategoryFilters.value);
-
   if (!selectedCategory.value) selectedCategoryFilters.value = {};
 
   emit("filter", selectedCategoryFilters.value, search.value);
