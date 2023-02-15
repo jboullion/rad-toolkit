@@ -20,17 +20,36 @@ export type ComponentTableProps = {
   //onSort: (sortProperty: string, sortAscending: boolean) => void;
 };
 
-// NOTE: This is not accurate for all components.  It is only accurate for some components.
 export type ComponentProperties = {
-  package: string;
+  package: string | string[];
   process_node: string;
-  clock_speed: string;
-  voltage: string;
-  cores: string;
+  qualifications: string | string[];
+  voltage: number | number[] | (number | string)[];
+  cost: string;
+  total_dose: number | string;
+  lut_threshold: number | string;
+  cores: string | string[];
+  clock_speed: number;
+  interfaces: ComponentInterface[];
   width: string;
-  cache: string;
-  interfaces: string;
   ram_type: string;
+  memory_capacity: number;
+  interface: string;
+  memory_type: string;
+  memory_format: string;
+  output_voltage: number | string;
+  output_current: number | string;
+  logic_cells: number;
+  io_count: number;
+  form_factor: string;
+  processor: string | string[];
+  nv_memory_capacity: string;
+  volatile_memory_capacity: string;
+};
+
+type ComponentInterface = {
+  property: string;
+  quantity: number;
 };
 
 export type ComponentCategory = {
@@ -44,6 +63,16 @@ export type CategoryFilter = {
   options: string[];
 };
 
+export enum ComponentCategoryEnum {
+  SOC = "System On Chip (SoC)",
+  Microprocessors = "Microprocessors",
+  Microcontrollers = "Microcontrollers",
+  FPGA = "FPGAs",
+  Memory = "Memory",
+  VoltageRegulator = "Voltage Regulators",
+  SBC = "SBCs",
+  InterfaceIC = "Interface ICs",
+}
 // export enum ComponentCategoryEnum {
 //   Microprocessor = 1,
 //   Memory = 2,

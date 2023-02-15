@@ -84,6 +84,7 @@ import {
   CategoryFilter,
   Component,
   ComponentCategory,
+  ComponentCategoryEnum,
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
@@ -138,21 +139,21 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
     return commonProperties;
 
   switch (currentCategory.value.name) {
-    case "System On Chip (SoC)":
+    case ComponentCategoryEnum.SOC:
       return commonProperties.concat(socProperties);
-    case "Microprocessors":
+    case ComponentCategoryEnum.Microprocessors:
       return commonProperties.concat(microProcessorProperties);
-    case "Microcontrollers":
+    case ComponentCategoryEnum.Microcontrollers:
       return commonProperties.concat(microcontrollerProperties);
-    case "FPGAs":
+    case ComponentCategoryEnum.FPGA:
       return commonProperties.concat(fpgaProperties);
-    case "Memory":
+    case ComponentCategoryEnum.Memory:
       return commonProperties.concat(memoryProperties);
-    case "Voltage Regulators":
+    case ComponentCategoryEnum.VoltageRegulator:
       return commonProperties.concat(voltageRegulatorProperties);
-    case "SBCs":
+    case ComponentCategoryEnum.SBC:
       return commonProperties.concat(SBCProperties);
-    case "Interface ICs":
+    case ComponentCategoryEnum.InterfaceIC:
       return commonProperties.concat(interfaceICProperties);
   }
 
@@ -165,30 +166,22 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
   let buildFilters: CategoryFilter[] = commonFilters.value;
 
   switch (currentCategory.value.name) {
-    case "Microprocessors":
-      buildFilters = buildFilters.concat(microProcessorFilters.value);
-      break;
-    case "Microcontrollers":
-      buildFilters = buildFilters.concat(microControllerFilters.value);
-      break;
-    case "System On Chip (SoC)":
+    case ComponentCategoryEnum.SOC:
       buildFilters = buildFilters.concat(socFilters.value);
-      break;
-    case "FPGAs":
+    case ComponentCategoryEnum.Microprocessors:
+      buildFilters = buildFilters.concat(microProcessorFilters.value);
+    case ComponentCategoryEnum.Microcontrollers:
+      buildFilters = buildFilters.concat(microControllerFilters.value);
+    case ComponentCategoryEnum.FPGA:
       buildFilters = buildFilters.concat(fpgaFilters.value);
-      break;
-    case "Memory":
+    case ComponentCategoryEnum.Memory:
       buildFilters = buildFilters.concat(memoryFilters.value);
-      break;
-    case "Voltage Regulators":
+    case ComponentCategoryEnum.VoltageRegulator:
       buildFilters = buildFilters.concat(voltageRegulatorFilters.value);
-      break;
-    case "SBCs":
+    case ComponentCategoryEnum.SBC:
       buildFilters = buildFilters.concat(SBCFilters.value);
-      break;
-    case "Interface ICs":
+    case ComponentCategoryEnum.InterfaceIC:
       buildFilters = buildFilters.concat(interfaceICFilters.value);
-      break;
     default:
   }
 
@@ -233,7 +226,7 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
       // check if the component has the property
       if (component.properties[filter.key as keyof ComponentProperties]) {
         // get the value of this property for this filter
-        const value: string | [] =
+        const value: any =
           component.properties[filter.key as keyof ComponentProperties];
 
         // check if the value is already in the options
@@ -247,7 +240,7 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
                 }
               });
             } else if (typeof value === "number") {
-              filter.options.push(value);
+              filter.options.push(value.toString());
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
               // @ts-ignore
@@ -292,7 +285,7 @@ function filterComponents(
     // check filters
     if (filters) {
       Object.keys(filters).forEach((key) => {
-        const componentProperty =
+        const componentProperty: any =
           component.properties[key as keyof ComponentProperties];
         let componentPropertiesArr: string[] = [];
 
@@ -353,6 +346,8 @@ function filterComponents(
 
     return matches;
   });
+
+  updateFilterURL();
 }
 
 function searchComponents(search: string) {
@@ -488,6 +483,24 @@ function exportComponents() {
   pom.href = url;
   pom.setAttribute("download", "SRT_export.csv");
   pom.click();
+}
+
+/**
+ * URL Update
+ */
+function updateFilterURL() {
+  var url = new URL("http://demourl.com/path?topic=main");
+  var search_params = url.searchParams;
+
+  search_params.append("id", "101");
+  search_params.append("id", "102");
+
+  url.search = search_params.toString();
+
+  var new_url = url.toString();
+
+  // output : http://demourl.com/path?id=100&id=101&id=102&topic=main
+  console.log(new_url);
 }
 </script>
 
