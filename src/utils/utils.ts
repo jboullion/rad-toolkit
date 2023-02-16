@@ -1,11 +1,11 @@
-export function abbreviateBaseTen(
+export function abbreviateNumber(
   value: number,
   unit: string,
-  decimals = 2
+  decimals = 2,
+  k = 1000
 ): string {
   if (!+value) return "0";
 
-  const k = 1000;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = [
     unit,
@@ -24,29 +24,17 @@ export function abbreviateBaseTen(
   return `${parseFloat((value / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
-export function abbreviateBytes(bytes: number, decimals = 2): string {
-  if (!+bytes) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-}
-
 export function formatProperty(rawProperty: number, property: string): string {
   if (property === "total_dose") {
-    return abbreviateBaseTen(rawProperty, "rad");
+    return abbreviateNumber(rawProperty, "rad");
   }
 
   if (property === "clock_speed") {
-    return abbreviateBaseTen(rawProperty, "Hz");
+    return abbreviateNumber(rawProperty, "Hz");
   }
 
   if (property === "memory_capacity") {
-    return abbreviateBytes(rawProperty);
+    return abbreviateNumber(rawProperty, "B", 2, 1024);
   }
 
   if (property === "voltage") {
