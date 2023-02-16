@@ -256,7 +256,9 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
                 }
               });
             } else if (typeof value === "number") {
-              filter.options.push(value.toString());
+              if (!filter.options.includes(value.toString())) {
+                filter.options.push(value.toString());
+              }
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
               // @ts-ignore
@@ -515,8 +517,6 @@ function updateURLParameter(
   search: string = ""
 ) {
   if (!currentCategory.value) return;
-
-  console.log("updateURLParameter", filters, search);
 
   var newUrl = location.protocol + "//" + location.host + location.pathname;
 
