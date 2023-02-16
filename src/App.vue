@@ -99,7 +99,7 @@ import {
   voltageRegulatorProperties,
   SBCProperties,
   interfaceICProperties,
-} from "./properties";
+} from "./types/properties";
 import {
   commonFilters,
   fpgaFilters,
@@ -110,7 +110,7 @@ import {
   voltageRegulatorFilters,
   SBCFilters,
   interfaceICFilters,
-} from "./filters";
+} from "./types/filters";
 
 const theme = ref("dark");
 const compare = ref(false);

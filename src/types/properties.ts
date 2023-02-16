@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { ComponentTableProps } from "./types/components";
+import { ComponentTableProps } from "./components";
 
 export const basicProperties: ComponentTableProps[] = [
   { title: "Name", sortProperty: "name" },
@@ -14,12 +14,16 @@ export const commonProperties: ComponentTableProps[] = [
   { title: "Package", sortProperty: "package" },
   { title: "Process Node", sortProperty: "process_node" },
   { title: "Qualifications", sortProperty: "qualifications" },
-  { title: "Voltage", unit: "(V)", sortProperty: "voltage" },
+  { title: "Voltage", unit: "V", sortProperty: "voltage" },
   { title: "Cost", sortProperty: "cost" },
-  { title: "Total Dose", unit: "(Rad)", sortProperty: "total_dose" },
   {
-    title: "LUT Threshold",
-    unit: "(MeV-cm2/mg)",
+    title: "Total Dose",
+    unit: "rad",
+    sortProperty: "total_dose",
+  },
+  {
+    title: "Latch-Up Threshold",
+    unit: "MeV-cm2/mg",
     sortProperty: "lut_threshold",
   },
 ];

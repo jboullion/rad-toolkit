@@ -18,7 +18,8 @@
           class="text-left"
           @click="$emit('sort', property.sortProperty)"
         >
-          {{ property.title }} {{ property.unit }}
+          {{ property.title }}
+          {{ property.unit ? "(" + property.unit + ")" : "" }}
         </th>
       </tr>
     </thead>
@@ -77,7 +78,7 @@ import {
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
-import { basicProperties } from "@/properties";
+import { formatProperty } from "@/utils/utils";
 
 defineProps<{
   components: Component[];
@@ -102,8 +103,20 @@ function displayComponentProperty(
 
   if (!rawProperty) return "";
 
+  if (typeof rawProperty === "number") {
+    return formatProperty(rawProperty, property);
+  }
+
   if (Array.isArray(rawProperty)) {
-    return rawProperty.join(", ");
+    return rawProperty
+      .map((p) => {
+        if (typeof p === "number") {
+          return formatProperty(p, property);
+        }
+
+        return p;
+      })
+      .join(", ");
   }
 
   return rawProperty.toString();
@@ -132,6 +145,10 @@ function displayComponentProperty(
   min-width: 80px;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.v-table__wrapper tbody td {
+  white-space: nowrap;
 }
 
 .component__compare > .v-input {

@@ -17,6 +17,7 @@ export type ComponentTableProps = {
   unit?: string;
   sortProperty: string;
   sortAscending?: boolean | null;
+  format?: (value: any) => string;
   //onSort: (sortProperty: string, sortAscending: boolean) => void;
 };
 

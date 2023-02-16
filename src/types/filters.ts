@@ -10,7 +10,7 @@ import {
   SBCProperties,
   interfaceICProperties,
 } from "./properties";
-import { CategoryFilter, ComponentTableProps } from "./types/components";
+import { CategoryFilter, ComponentTableProps } from "./components";
 
 export const commonFilters = computed<CategoryFilter[]>(() => {
   return setupFilters(commonProperties);

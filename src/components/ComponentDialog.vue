@@ -26,7 +26,10 @@
             </tr>
 
             <tr v-for="property in properties" :key="property.sortProperty">
-              <th>{{ property.title }} {{ property.unit }}</th>
+              <th>
+                {{ property.title }}
+                {{ property.unit ? "(" + property.unit + ")" : "" }}
+              </th>
               <td>
                 <p>
                   {{
@@ -55,7 +58,7 @@ import {
   ComponentTableProps,
 } from "@/types/components";
 import { ref, watch } from "vue";
-import { basicProperties } from "@/properties";
+import { basicProperties } from "@/types/properties";
 
 const props = defineProps<{
   showDialog: boolean;

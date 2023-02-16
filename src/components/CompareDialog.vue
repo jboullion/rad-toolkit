@@ -66,7 +66,7 @@ import {
   ComponentTableProps,
 } from "@/types/components";
 import { ref, watch } from "vue";
-import { basicProperties } from "@/properties";
+import { basicProperties } from "@/types/properties";
 
 const props = defineProps<{
   showDialog: boolean;
