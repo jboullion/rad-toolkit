@@ -48,7 +48,7 @@ export type ComponentProperties = {
   volatile_memory_capacity: string;
 };
 
-type ComponentInterface = {
+export type ComponentInterface = {
   property: string;
   quantity: number;
 };

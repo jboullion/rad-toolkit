@@ -76,6 +76,7 @@ import { ref } from "vue";
 import {
   Component,
   ComponentProperties,
+  ComponentInterface,
   ComponentTableProps,
 } from "@/types/components";
 
@@ -103,6 +104,19 @@ function displayComponentProperty(
   if (!rawProperty) return "";
 
   if (Array.isArray(rawProperty)) {
+    // @ts-ignore
+    if (rawProperty[0].property) {
+      let interfaceArray: string[] = [];
+
+      // @ts-ignore
+      rawProperty.forEach((p: ComponentInterface) => {
+        interfaceArray.push(p.quantity + "x " + p.property);
+      });
+
+      console.log("interfaceArray", interfaceArray);
+      rawProperty = interfaceArray;
+    }
+
     return rawProperty
       .map((p) => {
         return p;

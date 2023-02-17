@@ -462,12 +462,19 @@ async function updateCategory(category: number) {
       if (!value) return;
 
       if (Array.isArray(value)) {
+        // We have one property called interfaces which is an array of objects
+        // @ts-ignore
+        if (value[0].property) {
+          return;
+        }
+
         // @ts-ignore
         component.properties[key] = value
           .map((p) => {
             return prefixNumber(p, key);
           })
           .join(", ");
+
         return;
       }
 
