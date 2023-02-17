@@ -246,34 +246,30 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
         const value: any =
           component.properties[filter.key as keyof ComponentProperties];
 
-        console.log("filter.key", filter.key);
-
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
           if (filter.key !== "cores") {
             if (typeof value === "string") {
               // split on comma and add each value
               value.split(",").forEach((val) => {
-                const cleanVal = prefixNumber(val, filter.key);
-                console.log("cleanVal:string", cleanVal);
+                const cleanVal = val.trim();
+                //console.log("cleanVal:string", cleanVal);
                 if (!filter.options.includes(cleanVal)) {
                   filter.options.push(cleanVal);
                 }
               });
             } else if (typeof value === "number") {
-              const cleanVal = prefixNumber(value, filter.key);
               //console.log("cleanVal:number", cleanVal);
-              if (!filter.options.includes(cleanVal)) {
-                filter.options.push(cleanVal);
+              if (!filter.options.includes(value.toString())) {
+                filter.options.push(value.toString());
               }
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
               // @ts-ignore
               value.map((val: string) => {
-                const cleanVal = prefixNumber(val, filter.key);
                 //console.log("cleanVal:array", cleanVal);
-                if (!filter.options.includes(cleanVal)) {
-                  filter.options.push(prefixNumber(cleanVal, filter.key));
+                if (!filter.options.includes(val)) {
+                  filter.options.push(val);
                 }
               });
             } else {
@@ -281,10 +277,9 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
             }
           } else {
             // add the value
-            const cleanVal = prefixNumber(value, filter.key);
             //console.log("cleanVal:cores", cleanVal);
-            if (!filter.options.includes(cleanVal)) {
-              filter.options.push(prefixNumber(cleanVal, filter.key));
+            if (!filter.options.includes(value)) {
+              filter.options.push(value);
             }
           }
         }
@@ -347,7 +342,7 @@ function filterComponents(
 
             if (
               !componentPropertiesArr.some((prop) =>
-                filters[key].includes(prop.trim())
+                filters[key].includes(prop)
               )
             ) {
               matches = false;
@@ -461,6 +456,28 @@ async function updateCategory(category: number) {
 
   // reset all filters and components
   filteredComponents.value = components.value;
+
+  filteredComponents.value.map((component: Component) => {
+    // Abbreviate all our property values if needed
+    Object.keys(component.properties).map((key) => {
+      const value = component.properties[key as keyof ComponentProperties];
+
+      if (!value) return;
+
+      if (Array.isArray(value)) {
+        // @ts-ignore
+        component.properties[key] = value
+          .map((p) => {
+            return prefixNumber(p, key);
+          })
+          .join(", ");
+        return;
+      }
+
+      // @ts-ignore
+      component.properties[key] = prefixNumber(value, key);
+    });
+  });
 
   loading.value = false;
 

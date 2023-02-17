@@ -78,7 +78,6 @@ import {
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
-import { formatProperty, prefixNumber } from "@/utils/utils";
 
 defineProps<{
   components: Component[];
@@ -94,6 +93,7 @@ defineEmits<{
 
 const selectedComponents = ref<string[]>([]);
 
+// Sometimes we want to format or otherwise edit the display of a value in the table
 function displayComponentProperty(
   component: Component,
   property: string
@@ -105,12 +105,12 @@ function displayComponentProperty(
   if (Array.isArray(rawProperty)) {
     return rawProperty
       .map((p) => {
-        return prefixNumber(p, property);
+        return p;
       })
       .join(", ");
   }
 
-  return prefixNumber(rawProperty, property);
+  return rawProperty.toString();
 }
 </script>
 
