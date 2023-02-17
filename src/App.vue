@@ -454,11 +454,8 @@ async function updateCategory(category: number) {
 
   components.value = await response.json();
 
-  // reset all filters and components
-  filteredComponents.value = components.value;
-
-  filteredComponents.value.map((component: Component) => {
-    // Abbreviate all our property values if needed
+  // Abbreviate all our property values if needed
+  components.value.map((component: Component) => {
     Object.keys(component.properties).map((key) => {
       const value = component.properties[key as keyof ComponentProperties];
 
@@ -478,6 +475,9 @@ async function updateCategory(category: number) {
       component.properties[key] = prefixNumber(value, key);
     });
   });
+
+  // reset all filters and components
+  filteredComponents.value = components.value;
 
   loading.value = false;
 
