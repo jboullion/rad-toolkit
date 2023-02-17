@@ -111,6 +111,7 @@ import {
   SBCFilters,
   interfaceICFilters,
 } from "./types/filters";
+import { arrayToCsv, prefixNumber } from "./utils/utils";
 
 const theme = ref("dark");
 const compare = ref(false);
@@ -245,27 +246,34 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
         const value: any =
           component.properties[filter.key as keyof ComponentProperties];
 
+        console.log("filter.key", filter.key);
+
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
           if (filter.key !== "cores") {
             if (typeof value === "string") {
               // split on comma and add each value
               value.split(",").forEach((val) => {
-                if (!filter.options.includes(val.trim())) {
-                  filter.options.push(val.trim());
+                const cleanVal = prefixNumber(val, filter.key);
+                console.log("cleanVal:string", cleanVal);
+                if (!filter.options.includes(cleanVal)) {
+                  filter.options.push(cleanVal);
                 }
               });
             } else if (typeof value === "number") {
-              if (!filter.options.includes(value.toString())) {
-                filter.options.push(value.toString());
+              const cleanVal = prefixNumber(value, filter.key);
+              //console.log("cleanVal:number", cleanVal);
+              if (!filter.options.includes(cleanVal)) {
+                filter.options.push(cleanVal);
               }
             } else if (Array.isArray(value) || typeof value === "object") {
               // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
               // @ts-ignore
               value.map((val: string) => {
-                const cleanVal = typeof val === "string" ? val.trim() : val;
+                const cleanVal = prefixNumber(val, filter.key);
+                //console.log("cleanVal:array", cleanVal);
                 if (!filter.options.includes(cleanVal)) {
-                  filter.options.push(cleanVal);
+                  filter.options.push(prefixNumber(cleanVal, filter.key));
                 }
               });
             } else {
@@ -273,7 +281,11 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
             }
           } else {
             // add the value
-            filter.options.push(value.trim());
+            const cleanVal = prefixNumber(value, filter.key);
+            //console.log("cleanVal:cores", cleanVal);
+            if (!filter.options.includes(cleanVal)) {
+              filter.options.push(prefixNumber(cleanVal, filter.key));
+            }
           }
         }
       }
@@ -458,29 +470,6 @@ async function updateCategory(category: number) {
 /**
  * EXPORT
  */
-function arrayToCsv(data: any[]): string {
-  let headers = Object.keys(data[0]);
-
-  const headerString =
-    headers
-      .map(String)
-      .map((v: string) => v.replaceAll('"', '""'))
-      .map((v: string) => `"${v}"`)
-      .join(",") + "\r\n";
-
-  return (
-    headerString +
-    data
-      .map((row) => {
-        return Object.values(row)
-          .map(String)
-          .map((v: string) => v.replaceAll('"', '""'))
-          .map((v: string) => `"${v}"`)
-          .join(",");
-      })
-      .join("\r\n")
-  );
-}
 
 function exportComponents() {
   const filteredComponentArray = JSON.parse(

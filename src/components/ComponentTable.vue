@@ -78,7 +78,7 @@ import {
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
-import { formatProperty } from "@/utils/utils";
+import { formatProperty, prefixNumber } from "@/utils/utils";
 
 defineProps<{
   components: Component[];
@@ -98,28 +98,19 @@ function displayComponentProperty(
   component: Component,
   property: string
 ): string {
-  const rawProperty =
-    component.properties[property as keyof ComponentProperties];
+  let rawProperty = component.properties[property as keyof ComponentProperties];
 
   if (!rawProperty) return "";
-
-  if (typeof rawProperty === "number") {
-    return formatProperty(rawProperty, property);
-  }
 
   if (Array.isArray(rawProperty)) {
     return rawProperty
       .map((p) => {
-        if (typeof p === "number") {
-          return formatProperty(p, property);
-        }
-
-        return p;
+        return prefixNumber(p, property);
       })
       .join(", ");
   }
 
-  return rawProperty.toString();
+  return prefixNumber(rawProperty, property);
 }
 </script>
 
