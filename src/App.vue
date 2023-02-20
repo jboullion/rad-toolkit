@@ -169,20 +169,28 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
   switch (currentCategory.value.name) {
     case ComponentCategoryEnum.SOC:
       buildFilters = buildFilters.concat(socFilters.value);
+      break;
     case ComponentCategoryEnum.Microprocessors:
       buildFilters = buildFilters.concat(microProcessorFilters.value);
+      break;
     case ComponentCategoryEnum.Microcontrollers:
       buildFilters = buildFilters.concat(microControllerFilters.value);
+      break;
     case ComponentCategoryEnum.FPGA:
       buildFilters = buildFilters.concat(fpgaFilters.value);
+      break;
     case ComponentCategoryEnum.Memory:
       buildFilters = buildFilters.concat(memoryFilters.value);
+      break;
     case ComponentCategoryEnum.VoltageRegulator:
       buildFilters = buildFilters.concat(voltageRegulatorFilters.value);
+      break;
     case ComponentCategoryEnum.SBC:
       buildFilters = buildFilters.concat(SBCFilters.value);
+      break;
     case ComponentCategoryEnum.InterfaceIC:
       buildFilters = buildFilters.concat(interfaceICFilters.value);
+      break;
     default:
   }
 
@@ -248,40 +256,49 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
-          if (filter.key !== "cores") {
-            if (typeof value === "string") {
-              // split on comma and add each value
-              value.split(",").forEach((val) => {
-                const cleanVal = val.trim();
-                //console.log("cleanVal:string", cleanVal);
-                if (!filter.options.includes(cleanVal)) {
-                  filter.options.push(cleanVal);
-                }
-              });
-            } else if (typeof value === "number") {
-              //console.log("cleanVal:number", cleanVal);
-              if (!filter.options.includes(value.toString())) {
-                filter.options.push(value.toString());
+          //if (filter.key !== "cores") {
+
+          // @ts-ignore
+          if (value[0].property) {
+            // @ts-ignore
+            value.forEach((p: ComponentInterface) => {
+              if (!filter.options.includes(p.property)) {
+                filter.options.push(p.property);
               }
-            } else if (Array.isArray(value) || typeof value === "object") {
-              // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
-              // @ts-ignore
-              value.map((val: string) => {
-                //console.log("cleanVal:array", cleanVal);
-                if (!filter.options.includes(val)) {
-                  filter.options.push(val);
-                }
-              });
-            } else {
-              console.error("value is of unknown type", value);
+            });
+          } else if (typeof value === "string") {
+            // split on comma and add each value
+            value.split(",").forEach((val) => {
+              const cleanVal = val.trim();
+              //console.log("cleanVal:string", cleanVal);
+              if (!filter.options.includes(cleanVal)) {
+                filter.options.push(cleanVal);
+              }
+            });
+          } else if (typeof value === "number") {
+            //console.log("cleanVal:number", cleanVal);
+            if (!filter.options.includes(value.toString())) {
+              filter.options.push(value.toString());
             }
+          } else if (Array.isArray(value) || typeof value === "object") {
+            // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
+            // @ts-ignore
+            value.map((val: string) => {
+              //console.log("cleanVal:array", cleanVal);
+              if (!filter.options.includes(val)) {
+                filter.options.push(val);
+              }
+            });
           } else {
-            // add the value
-            //console.log("cleanVal:cores", cleanVal);
-            if (!filter.options.includes(value)) {
-              filter.options.push(value);
-            }
+            console.error("value is of unknown type", value);
           }
+          // } else {
+          //   // add the value
+          //   //console.log("cleanVal:cores", cleanVal);
+          //   // if (!filter.options.includes(value)) {
+          //   //   filter.options.push(value);
+          //   // }
+          // }
         }
       }
 
@@ -317,6 +334,10 @@ function filterComponents(
         const componentProperty: any =
           component.properties[key as keyof ComponentProperties];
         let componentPropertiesArr: string[] = [];
+
+        if (!componentProperty) {
+          return;
+        }
 
         if (filters[key] && filters[key].length > 0) {
           if (key === "cores") {
@@ -457,12 +478,26 @@ async function updateCategory(category: number) {
   // Abbreviate all our property values if needed
   components.value.map((component: Component) => {
     Object.keys(component.properties).map((key) => {
-      const value = component.properties[key as keyof ComponentProperties];
+      let value = component.properties[key as keyof ComponentProperties];
 
       if (!value) return;
 
       if (Array.isArray(value)) {
         // We have one property called interfaces which is an array of objects
+
+        // Do we want to prepare our interfaces here or in the places they are used?
+        // // @ts-ignore
+        // if (value[0].property) {
+        //   let interfaceArray: string[] = [];
+
+        //   // @ts-ignore
+        //   value.forEach((p: ComponentInterface) => {
+        //     interfaceArray.push(p.property);
+        //   });
+
+        //   value = interfaceArray;
+        // }
+
         // @ts-ignore
         if (value[0].property) {
           return;

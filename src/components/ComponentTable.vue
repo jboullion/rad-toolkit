@@ -113,7 +113,6 @@ function displayComponentProperty(
         interfaceArray.push(p.quantity + "x " + p.property);
       });
 
-      console.log("interfaceArray", interfaceArray);
       rawProperty = interfaceArray;
     }
 
