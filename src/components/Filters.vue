@@ -12,7 +12,7 @@
           @update:modelValue="updateCategory"
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="4">
+      <v-col cols="12" sm="4" v-if="currentCategory">
         <v-text-field
           v-model="search"
           variant="outlined"

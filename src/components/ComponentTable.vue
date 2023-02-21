@@ -68,7 +68,7 @@
           </p>
         </td>
         <td class="component__files">
-          <span v-for="file in component.files"
+          <span v-for="file in component.files" class="d-block"
             ><a :href="file" target="_blank">{{
               displayFileName(file)
             }}</a></span
