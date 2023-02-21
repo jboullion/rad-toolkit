@@ -84,6 +84,7 @@ import {
   Component,
   ComponentCategory,
   ComponentCategoryEnum,
+  ComponentInterface,
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
@@ -336,6 +337,7 @@ function filterComponents(
         let componentPropertiesArr: string[] = [];
 
         if (!componentProperty) {
+          matches = false;
           return;
         }
 
@@ -345,7 +347,12 @@ function filterComponents(
               matches = false;
             }
           } else {
-            if (typeof componentProperty === "string") {
+            // @ts-ignore
+            if (componentProperty[0].property) {
+              componentProperty.forEach((p: ComponentInterface) => {
+                componentPropertiesArr.push(p.property);
+              });
+            } else if (typeof componentProperty === "string") {
               componentPropertiesArr = componentProperty.split(",");
             } else if (typeof componentProperty === "number") {
               componentPropertiesArr = [componentProperty.toString()];
