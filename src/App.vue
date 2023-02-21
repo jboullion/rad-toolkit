@@ -336,11 +336,6 @@ function filterComponents(
           component.properties[key as keyof ComponentProperties];
         let componentPropertiesArr: string[] = [];
 
-        if (!componentProperty) {
-          matches = false;
-          return;
-        }
-
         if (filters[key] && filters[key].length > 0) {
           if (key === "cores") {
             if (!filters[key].includes(componentProperty)) {
@@ -348,10 +343,12 @@ function filterComponents(
             }
           } else {
             // @ts-ignore
-            if (componentProperty[0].property) {
-              componentProperty.forEach((p: ComponentInterface) => {
-                componentPropertiesArr.push(p.property);
-              });
+            if (key === "interfaces") {
+              if (componentProperty && componentProperty[0]?.property) {
+                componentProperty.forEach((p: ComponentInterface) => {
+                  componentPropertiesArr.push(p.property);
+                });
+              }
             } else if (typeof componentProperty === "string") {
               componentPropertiesArr = componentProperty.split(",");
             } else if (typeof componentProperty === "number") {
