@@ -69,7 +69,9 @@
         </td>
         <td class="component__files">
           <span v-for="file in component.files"
-            ><a :href="file" target="_blank">View</a></span
+            ><a :href="file" target="_blank">{{
+              displayFileName(file)
+            }}</a></span
           >
         </td>
       </tr>
@@ -112,6 +114,7 @@ function displayComponentProperty(
 
   if (
     (property === "primary_interface" || property === "secondary_interface") &&
+    // @ts-ignore
     rawProperty.property
   ) {
     let interfaceProperty = rawProperty as ComponentInterface;
@@ -140,6 +143,10 @@ function displayComponentProperty(
   }
 
   return rawProperty.toString();
+}
+
+function displayFileName(file: string): string {
+  return file.split("/").pop() || "";
 }
 </script>
 
