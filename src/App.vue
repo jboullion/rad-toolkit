@@ -543,6 +543,8 @@ function exportComponents() {
       component[key] = value;
     });
 
+    delete component.component_id;
+    delete component.category_id;
     delete component.properties;
   });
 
