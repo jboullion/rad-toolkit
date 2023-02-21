@@ -47,6 +47,8 @@ export type ComponentProperties = {
   processor: string | string[];
   nv_memory_capacity: string;
   volatile_memory_capacity: string;
+  primary_interface: ComponentInterface;
+  secondary_interface: ComponentInterface;
 };
 
 export type ComponentInterface = {

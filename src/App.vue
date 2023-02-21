@@ -260,7 +260,12 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
           //if (filter.key !== "cores") {
 
           // @ts-ignore
-          if (value[0].property) {
+          if (value && value.property) {
+            // @ts-ignore
+            if (!filter.options.includes(value.property)) {
+              filter.options.push(value.property);
+            }
+          } else if (value[0] && value[0].property) {
             // @ts-ignore
             value.forEach((p: ComponentInterface) => {
               if (!filter.options.includes(p.property)) {
@@ -283,6 +288,7 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
             }
           } else if (Array.isArray(value) || typeof value === "object") {
             // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
+
             // @ts-ignore
             value.map((val: string) => {
               //console.log("cleanVal:array", cleanVal);
@@ -349,6 +355,11 @@ function filterComponents(
                   componentPropertiesArr.push(p.property);
                 });
               }
+            } else if (
+              key === "primary_interface" ||
+              key === "secondary_interface"
+            ) {
+              componentPropertiesArr = [componentProperty.property];
             } else if (typeof componentProperty === "string") {
               componentPropertiesArr = componentProperty.split(",");
             } else if (typeof componentProperty === "number") {
@@ -491,7 +502,7 @@ async function updateCategory(category: number) {
 
         // Do we want to prepare our interfaces here or in the places they are used?
         // // @ts-ignore
-        // if (value[0].property) {
+        // if (value[0] &&  value[0].property) {
         //   let interfaceArray: string[] = [];
 
         //   // @ts-ignore
@@ -503,7 +514,7 @@ async function updateCategory(category: number) {
         // }
 
         // @ts-ignore
-        if (value[0].property) {
+        if (value[0] && value[0].property) {
           return;
         }
 

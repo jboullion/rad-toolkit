@@ -47,7 +47,10 @@ export const microcontrollerProperties: ComponentTableProps[] = [
 ];
 
 // FPGAs
-export const fpgaProperties: ComponentTableProps[] = [];
+export const fpgaProperties: ComponentTableProps[] = [
+  { title: "Logic Cells", sortProperty: "logic_cells" },
+  { title: "IO Count", sortProperty: "io_count" },
+];
 
 export const memoryProperties: ComponentTableProps[] = [
   { title: "Memory Capacity", sortProperty: "memory_capacity" },
@@ -57,6 +60,23 @@ export const memoryProperties: ComponentTableProps[] = [
   { title: "Memory Format", sortProperty: "memory_format" },
 ];
 
-export const voltageRegulatorProperties: ComponentTableProps[] = [];
-export const SBCProperties: ComponentTableProps[] = [];
-export const interfaceICProperties: ComponentTableProps[] = [];
+export const voltageRegulatorProperties: ComponentTableProps[] = [
+  { title: "Output Voltage", sortProperty: "output_voltage" },
+  { title: "Output Current", sortProperty: "output_current" },
+];
+
+export const SBCProperties: ComponentTableProps[] = [
+  { title: "Form Factor", sortProperty: "form_factor" },
+  { title: "Processor", sortProperty: "processor" },
+  { title: "Interface", sortProperty: "interface" },
+  { title: "NV Memory Capacity", sortProperty: "nv_memory_capacity" },
+  {
+    title: "Volatile Memory Capacity",
+    sortProperty: "volatile_memory_capacity",
+  },
+];
+
+export const interfaceICProperties: ComponentTableProps[] = [
+  { title: "Primary Interface", sortProperty: "primary_interface" },
+  { title: "Secondary Interface", sortProperty: "secondary_interface" },
+];

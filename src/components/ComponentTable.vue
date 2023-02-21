@@ -85,6 +85,7 @@ import {
   ComponentInterface,
   ComponentTableProps,
 } from "@/types/components";
+import { compileScript } from "@vue/compiler-sfc";
 
 defineProps<{
   components: Component[];
@@ -109,9 +110,18 @@ function displayComponentProperty(
 
   if (!rawProperty) return "";
 
+  if (
+    (property === "primary_interface" || property === "secondary_interface") &&
+    rawProperty.property
+  ) {
+    let interfaceProperty = rawProperty as ComponentInterface;
+
+    return interfaceProperty.quantity + "x " + interfaceProperty.property;
+  }
+
   if (Array.isArray(rawProperty)) {
     // @ts-ignore
-    if (rawProperty[0].property) {
+    if (rawProperty[0] && rawProperty[0].property) {
       let interfaceArray: string[] = [];
 
       // @ts-ignore
