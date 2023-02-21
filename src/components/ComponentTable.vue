@@ -21,6 +21,7 @@
           {{ property.title }}
           {{ property.unit ? "(" + property.unit + ")" : "" }}
         </th>
+        <th>Files</th>
       </tr>
     </thead>
     <tbody>
@@ -65,6 +66,11 @@
           <p>
             {{ displayComponentProperty(component, property.sortProperty) }}
           </p>
+        </td>
+        <td class="component__files">
+          <span v-for="file in component.files"
+            ><a :href="file" target="_blank">View</a></span
+          >
         </td>
       </tr>
     </tbody>

@@ -10,6 +10,7 @@ export type Component = {
   category_name: string;
   manufacturer: string;
   properties: ComponentProperties;
+  files: string[];
 };
 
 export type ComponentTableProps = {

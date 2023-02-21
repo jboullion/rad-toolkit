@@ -45,6 +45,7 @@ class Component {
 			$components = [];
 			while ($component = $component_stmt->fetchObject()){
 				$component->properties = json_decode($component->properties);
+				$component->files = $this->getComponentFiles($component->component_id);
 				$components[] = $component;
 			}
 
@@ -74,6 +75,27 @@ class Component {
 			}
 
 			return $categories;
+
+		} catch (PDOException $e) {
+			return false;
+		}
+	}
+
+	public function getComponentFiles($component_id){
+		try{
+			$query = "SELECT `url` FROM files WHERE component_id = :component_id";
+
+			$stmt = $this->pdo->prepare($query);
+			$stmt->bindParam(':component_id', $component_id, PDO::PARAM_INT);
+			$stmt->execute();
+
+			$files = [];
+			while ($file = $stmt->fetchObject())
+			{	
+				$files[] = $file->url;
+			}
+
+			return $files;
 
 		} catch (PDOException $e) {
 			return false;
