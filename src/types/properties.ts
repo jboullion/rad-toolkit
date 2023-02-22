@@ -78,5 +78,5 @@ export const SBCProperties: ComponentTableProps[] = [
 
 export const interfaceICProperties: ComponentTableProps[] = [
   { title: "Primary Interface", sortProperty: "primary_interface" },
-  { title: "Secondary Interface", sortProperty: "secondary_interface" },
+  { title: "Secondary Interface", sortProperty: "secondary_interfaces" },
 ];

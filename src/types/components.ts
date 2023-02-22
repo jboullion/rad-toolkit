@@ -48,7 +48,7 @@ export type ComponentProperties = {
   nv_memory_capacity: string;
   volatile_memory_capacity: string;
   primary_interface: ComponentInterface;
-  secondary_interface: ComponentInterface;
+  secondary_interfaces: ComponentInterface[];
 };
 
 export type ComponentInterface = {

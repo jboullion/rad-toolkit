@@ -349,16 +349,13 @@ function filterComponents(
             }
           } else {
             // @ts-ignore
-            if (key === "interfaces") {
+            if (key === "interfaces" || key === "secondary_interfaces") {
               if (componentProperty && componentProperty[0]?.property) {
                 componentProperty.forEach((p: ComponentInterface) => {
                   componentPropertiesArr.push(p.property);
                 });
               }
-            } else if (
-              key === "primary_interface" ||
-              key === "secondary_interface"
-            ) {
+            } else if (key === "primary_interface") {
               componentPropertiesArr = [componentProperty.property];
             } else if (typeof componentProperty === "string") {
               componentPropertiesArr = componentProperty.split(",");

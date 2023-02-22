@@ -113,7 +113,7 @@ function displayComponentProperty(
   if (!rawProperty) return "";
 
   if (
-    (property === "primary_interface" || property === "secondary_interface") &&
+    property === "primary_interface" &&
     // @ts-ignore
     rawProperty.property
   ) {
