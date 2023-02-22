@@ -246,7 +246,7 @@ function setupComponent(component: Component) {
  */
 function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
   // loop through each component and add the options to the filters
-  components.value.forEach((component) => {
+  filteredComponents.value.forEach((component) => {
     // loop through each filter and add the options
     newFilters.forEach((filter) => {
       // check if the component has the property
@@ -414,6 +414,8 @@ function filterComponents(
 
     return matches;
   });
+
+  populateFilterOptions(categoryFilters.value);
 }
 
 function filterCategories(selectedCategory: number) {
