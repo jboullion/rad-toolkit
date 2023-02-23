@@ -29,7 +29,7 @@
                 >
                   <p v-if="property.sortProperty !== 'url'">
                     {{
-                      displayComponentProperty(component, property.sortProperty)
+                      component[property.sortProperty as keyof typeof component]
                     }}
                   </p>
                   <a v-else :href="component.url" target="_blank">View</a>
