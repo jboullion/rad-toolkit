@@ -257,55 +257,54 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 
         // check if the value is already in the options
         if (!filter.options.includes(value)) {
-          //if (filter.key !== "cores") {
+          if (filter.key !== "cores") {
+            // @ts-ignore
+            if (value && value.property) {
+              // @ts-ignore
+              if (!filter.options.includes(value.property)) {
+                filter.options.push(value.property);
+              }
+            } else if (value[0] && value[0].property) {
+              // @ts-ignore
+              value.forEach((p: ComponentInterface) => {
+                if (!filter.options.includes(p.property)) {
+                  filter.options.push(p.property);
+                }
+              });
+            } else if (typeof value === "string") {
+              // split on comma and add each value
+              value.split(",").forEach((val) => {
+                const cleanVal = val.trim();
+                //console.log("cleanVal:string", cleanVal);
+                if (!filter.options.includes(cleanVal)) {
+                  filter.options.push(cleanVal);
+                }
+              });
+            } else if (typeof value === "number") {
+              //console.log("cleanVal:number", cleanVal);
+              if (!filter.options.includes(value.toString())) {
+                filter.options.push(value.toString());
+              }
+            } else if (Array.isArray(value) || typeof value === "object") {
+              // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
 
-          // @ts-ignore
-          if (value && value.property) {
-            // @ts-ignore
-            if (!filter.options.includes(value.property)) {
-              filter.options.push(value.property);
+              // @ts-ignore
+              value.map((val: string) => {
+                //console.log("cleanVal:array", cleanVal);
+                if (!filter.options.includes(val)) {
+                  filter.options.push(val);
+                }
+              });
+            } else {
+              console.error("value is of unknown type", value);
             }
-          } else if (value[0] && value[0].property) {
-            // @ts-ignore
-            value.forEach((p: ComponentInterface) => {
-              if (!filter.options.includes(p.property)) {
-                filter.options.push(p.property);
-              }
-            });
-          } else if (typeof value === "string") {
-            // split on comma and add each value
-            value.split(",").forEach((val) => {
-              const cleanVal = val.trim();
-              //console.log("cleanVal:string", cleanVal);
-              if (!filter.options.includes(cleanVal)) {
-                filter.options.push(cleanVal);
-              }
-            });
-          } else if (typeof value === "number") {
-            //console.log("cleanVal:number", cleanVal);
-            if (!filter.options.includes(value.toString())) {
-              filter.options.push(value.toString());
-            }
-          } else if (Array.isArray(value) || typeof value === "object") {
-            // Arrayed properties are often returned as Javascript Proxies, so we need to convert them to an array
-
-            // @ts-ignore
-            value.map((val: string) => {
-              //console.log("cleanVal:array", cleanVal);
-              if (!filter.options.includes(val)) {
-                filter.options.push(val);
-              }
-            });
           } else {
-            console.error("value is of unknown type", value);
+            // add the value
+            //console.log("cleanVal:cores", cleanVal);
+            if (!filter.options.includes(value)) {
+              filter.options.push(value);
+            }
           }
-          // } else {
-          //   // add the value
-          //   //console.log("cleanVal:cores", cleanVal);
-          //   // if (!filter.options.includes(value)) {
-          //   //   filter.options.push(value);
-          //   // }
-          // }
         }
       }
 
