@@ -26,8 +26,8 @@
     </thead>
     <tbody>
       <tr
-        v-for="(component, index) in components"
-        :key="index"
+        v-for="component in components"
+        :key="component.category_id"
         class="component"
       >
         <td class="component__compare">
@@ -81,13 +81,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import {
-  Component,
-  ComponentProperties,
-  ComponentInterface,
-  ComponentTableProps,
-} from "@/types/components";
-import { compileScript } from "@vue/compiler-sfc";
+import { Component, ComponentTableProps } from "@/types/components";
+import { displayComponentProperty, displayFileName } from "@/utils/utils";
 
 defineProps<{
   components: Component[];
@@ -102,52 +97,6 @@ defineEmits<{
 }>();
 
 const selectedComponents = ref<string[]>([]);
-
-// Sometimes we want to format or otherwise edit the display of a value in the table
-function displayComponentProperty(
-  component: Component,
-  property: string
-): string {
-  let rawProperty = component.properties[property as keyof ComponentProperties];
-
-  if (!rawProperty) return "";
-
-  if (
-    property === "primary_interface" &&
-    // @ts-ignore
-    rawProperty.property
-  ) {
-    let interfaceProperty = rawProperty as ComponentInterface;
-
-    return interfaceProperty.quantity + "x " + interfaceProperty.property;
-  }
-
-  if (Array.isArray(rawProperty)) {
-    // @ts-ignore
-    if (rawProperty[0] && rawProperty[0].property) {
-      let interfaceArray: string[] = [];
-
-      // @ts-ignore
-      rawProperty.forEach((p: ComponentInterface) => {
-        interfaceArray.push(p.quantity + "x " + p.property);
-      });
-
-      rawProperty = interfaceArray;
-    }
-
-    return rawProperty
-      .map((p) => {
-        return p;
-      })
-      .join(", ");
-  }
-
-  return rawProperty.toString();
-}
-
-function displayFileName(file: string): string {
-  return file.split("/").pop() || "";
-}
 </script>
 
 <style>

@@ -16,7 +16,7 @@
               <td>
                 <p v-if="property.sortProperty !== 'url'">
                   {{
-                    component[property.sortProperty as keyof typeof component]
+                    displayComponentProperty(component, property.sortProperty)
                   }}
                 </p>
                 <a v-else :href="component.url" target="_blank">View</a>
@@ -31,11 +31,19 @@
               <td>
                 <p>
                   {{
-                    component.properties[
-                      property.sortProperty as keyof ComponentProperties
-                    ]
+                    displayComponentProperty(component, property.sortProperty)
                   }}
                 </p>
+              </td>
+            </tr>
+            <tr>
+              <th>Files</th>
+              <td class="component__files">
+                <span v-for="file in component.files" class="d-block"
+                  ><a :href="file" target="_blank">{{
+                    displayFileName(file)
+                  }}</a></span
+                >
               </td>
             </tr>
           </tbody>
@@ -57,6 +65,7 @@ import {
 } from "@/types/components";
 import { ref, watch } from "vue";
 import { basicProperties } from "@/types/properties";
+import { displayComponentProperty, displayFileName } from "@/utils/utils";
 
 const props = defineProps<{
   showDialog: boolean;
@@ -91,6 +100,11 @@ watch(
 #component-dialog.v-dialog .v-overlay__content {
   width: 800px !important;
   max-width: 100% !important;
+}
+
+#component-dialog .v-table > .v-table__wrapper {
+  max-height: none;
+  overflow-y: auto;
 }
 
 #component-dialog.v-dialog

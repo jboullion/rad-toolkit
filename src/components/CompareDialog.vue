@@ -23,12 +23,13 @@
               <tr v-for="property in basicProperties">
                 <th>{{ property.title }}</th>
                 <td
-                  v-for="(component, index) in components"
+                  v-for="component in components"
+                  :key="'basic-' + component.category_id"
                   style="width: 300px"
                 >
                   <p v-if="property.sortProperty !== 'url'">
                     {{
-                      component[property.sortProperty as keyof typeof component]
+                      displayComponentProperty(component, property.sortProperty)
                     }}
                   </p>
                   <a v-else :href="component.url" target="_blank">View</a>
@@ -40,13 +41,23 @@
                   v-for="(component, index) in components"
                   style="width: 300px"
                 >
-                  <p>
-                    {{
-                      component.properties[
-                        property.sortProperty as keyof ComponentProperties
-                      ]
-                    }}
-                  </p>
+                  {{
+                    displayComponentProperty(component, property.sortProperty)
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th>Files</th>
+                <td
+                  class="component__files"
+                  v-for="component in components"
+                  :key="'file-' + component.category_id"
+                >
+                  <span v-for="file in component.files" class="d-block"
+                    ><a :href="file" target="_blank">{{
+                      displayFileName(file)
+                    }}</a></span
+                  >
                 </td>
               </tr>
             </tbody>
@@ -65,6 +76,7 @@ import {
 } from "@/types/components";
 import { ref, watch } from "vue";
 import { basicProperties } from "@/types/properties";
+import { displayComponentProperty, displayFileName } from "@/utils/utils";
 
 const props = defineProps<{
   showDialog: boolean;
@@ -106,22 +118,33 @@ watch(
 #compare > div {
   border: 1px solid
     rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  overflow: hidden;
+  margin: 0;
 }
 
 #compare .v-table > .v-table__wrapper > table > tbody > tr > th {
   font-size: 1rem;
+  height: auto;
 }
 
 #compare .v-table > .v-table__wrapper > table > tbody > tr > td {
   padding: 15px;
   word-break: break-word;
   vertical-align: top;
+  max-width: 300px;
+  white-space: normal;
+  min-width: 150px;
 }
 
 #compare .v-table > .v-table__wrapper > table > tbody > tr:first-child p {
   font-weight: bold;
   font-size: 1rem;
 }
+
+/* #compare .v-table > .v-table__wrapper {
+  max-height: none;
+  overflow-y: auto;
+} */
 
 #compare
   .v-table

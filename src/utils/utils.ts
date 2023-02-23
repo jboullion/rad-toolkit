@@ -1,3 +1,9 @@
+import {
+  Component,
+  ComponentInterface,
+  ComponentProperties,
+} from "@/types/components";
+
 // turn an array of objects into a csv string
 export function arrayToCsv(data: any[]): string {
   let headers = Object.keys(data[0]);
@@ -90,4 +96,50 @@ export function prefixNumber(value: any, property: string): string {
   }
 
   return value;
+}
+
+// Sometimes we want to format or otherwise edit the display of a value in the table
+export function displayComponentProperty(
+  component: Component,
+  property: string
+): string {
+  let rawProperty = component.properties[property as keyof ComponentProperties];
+
+  if (!rawProperty) return "";
+
+  if (
+    property === "primary_interface" &&
+    // @ts-ignore
+    rawProperty.property
+  ) {
+    let interfaceProperty = rawProperty as ComponentInterface;
+
+    return interfaceProperty.quantity + "x " + interfaceProperty.property;
+  }
+
+  if (Array.isArray(rawProperty)) {
+    // @ts-ignore
+    if (rawProperty[0] && rawProperty[0].property) {
+      let interfaceArray: string[] = [];
+
+      // @ts-ignore
+      rawProperty.forEach((p: ComponentInterface) => {
+        interfaceArray.push(p.quantity + "x " + p.property);
+      });
+
+      rawProperty = interfaceArray;
+    }
+
+    return rawProperty
+      .map((p) => {
+        return p;
+      })
+      .join(", ");
+  }
+
+  return rawProperty.toString();
+}
+
+export function displayFileName(file: string): string {
+  return file.split("/").pop() || "";
 }
