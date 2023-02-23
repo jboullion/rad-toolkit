@@ -327,11 +327,13 @@ function filterComponents(
   filters: { [key: string]: string } = {},
   search: string = ""
 ) {
+  search = search.toLowerCase();
+
   // Update our URL with the new filters
   updateURLParameter(filters, search);
 
   // filter current catrgory components
-  filteredComponents.value = components.value.filter((component) => {
+  filteredComponents.value = components.value.filter((component: Component) => {
     let matches = true;
 
     // check filters
