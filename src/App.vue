@@ -87,6 +87,7 @@ import {
   ComponentInterface,
   ComponentProperties,
   ComponentTableProps,
+  defaultComponent,
 } from "@/types/components";
 
 import { useThrottleFn } from "@vueuse/core";
@@ -126,7 +127,8 @@ function toggleTheme() {
 const components = ref<Component[]>([]);
 
 const categories = ref<ComponentCategory[]>([]);
-const currentComponent = ref<Component | null>(null);
+const currentComponent = ref<Component>(defaultComponent);
+
 const currentCategory = ref<ComponentCategory>();
 const showComponent = ref(false);
 const filteredComponents = ref<Component[]>([]);
