@@ -6,7 +6,7 @@
     scrollable
   >
     <v-card>
-      <v-card-title>{{ component.name }}</v-card-title>
+      <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-table>
@@ -19,7 +19,12 @@
                     component[property.sortProperty as keyof typeof component]
                   }}
                 </p>
-                <a v-else :href="component.url" target="_blank">View</a>
+                <a
+                  v-else-if="component.url"
+                  :href="component.url"
+                  target="_blank"
+                  >View</a
+                >
               </td>
             </tr>
 
@@ -63,13 +68,13 @@ import {
   ComponentProperties,
   ComponentTableProps,
 } from "@/types/components";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { basicProperties } from "@/types/properties";
 import { displayComponentProperty, displayFileName } from "@/utils/utils";
 
 const props = defineProps<{
   showDialog: boolean;
-  component: Component | null;
+  component: Component;
   properties: ComponentTableProps[];
 }>();
 
@@ -78,6 +83,20 @@ const emit = defineEmits<{
 }>();
 
 const openDialog = ref(false);
+
+const title = computed(() => {
+  if (props.component.name) {
+    return props.component.name;
+  } else if (props.component.manufacturer && props.component.partnum) {
+    return props.component.manufacturer + ": #" + props.component.partnum;
+  } else if (props.component.manufacturer) {
+    return props.component.manufacturer;
+  } else if (props.component.partnum) {
+    return props.component.partnum;
+  }
+
+  return "Component";
+});
 
 watch(
   () => props.showDialog,

@@ -32,7 +32,12 @@
                       component[property.sortProperty as keyof typeof component]
                     }}
                   </p>
-                  <a v-else :href="component.url" target="_blank">View</a>
+                  <a
+                    v-else-if="component.url"
+                    :href="component.url"
+                    target="_blank"
+                    >View</a
+                  >
                 </td>
               </tr>
               <tr v-for="property in properties">
