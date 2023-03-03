@@ -105,7 +105,7 @@ const selectedComponents = ref<string[]>([]);
 }
 
 .v-table .v-table__wrapper {
-  max-height: 80vh;
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
 }
 
