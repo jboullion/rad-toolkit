@@ -540,7 +540,7 @@ async function updateCategory(category: number) {
 
   loading.value = false;
 
-  //updateURLParameter({}, search.value);
+  updateURLParameter({}, search.value);
 }
 
 /**
