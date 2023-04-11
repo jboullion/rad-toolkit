@@ -9,6 +9,7 @@ import {
   voltageRegulatorProperties,
   SBCProperties,
   interfaceICProperties,
+  diodeProperties,
 } from "./properties";
 import { CategoryFilter, ComponentTableProps } from "./components";
 
@@ -46,6 +47,10 @@ export const SBCFilters = computed<CategoryFilter[]>(() => {
 
 export const interfaceICFilters = computed<CategoryFilter[]>(() => {
   return setupFilters(interfaceICProperties);
+});
+
+export const diodeFilters = computed<CategoryFilter[]>(() => {
+  return setupFilters(diodeProperties);
 });
 
 function setupFilters(properties: ComponentTableProps[]) {

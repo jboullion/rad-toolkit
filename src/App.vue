@@ -101,6 +101,7 @@ import {
   voltageRegulatorProperties,
   SBCProperties,
   interfaceICProperties,
+  diodeProperties,
 } from "./types/properties";
 import {
   commonFilters,
@@ -112,6 +113,7 @@ import {
   voltageRegulatorFilters,
   SBCFilters,
   interfaceICFilters,
+  diodeFilters,
 } from "./types/filters";
 import { arrayToCsv, prefixNumber } from "./utils/utils";
 
@@ -159,6 +161,8 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
       return commonProperties.concat(SBCProperties);
     case ComponentCategoryEnum.InterfaceIC:
       return commonProperties.concat(interfaceICProperties);
+    case ComponentCategoryEnum.Diodes:
+      return commonProperties.concat(diodeProperties);
   }
 
   return commonProperties;
@@ -193,6 +197,9 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
       break;
     case ComponentCategoryEnum.InterfaceIC:
       buildFilters = buildFilters.concat(interfaceICFilters.value);
+      break;
+    case ComponentCategoryEnum.Diodes:
+      buildFilters = buildFilters.concat(diodeFilters.value);
       break;
     default:
   }

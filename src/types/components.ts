@@ -76,6 +76,7 @@ export enum ComponentCategoryEnum {
   VoltageRegulator = "Voltage Regulators",
   SBC = "SBCs",
   InterfaceIC = "Interface ICs",
+  Diodes = "Diodes",
 }
 // export enum ComponentCategoryEnum {
 //   Microprocessor = 1,

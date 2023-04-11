@@ -80,3 +80,11 @@ export const interfaceICProperties: ComponentTableProps[] = [
   { title: "Primary Interface", sortProperty: "primary_interface" },
   { title: "Secondary Interface", sortProperty: "secondary_interfaces" },
 ];
+
+export const diodeProperties: ComponentTableProps[] = [
+  // foward_current, foward_voltage, reverse_voltage, type
+  { title: "Forward Current", sortProperty: "forward_current" },
+  { title: "Forward Voltage", sortProperty: "forward_voltage" },
+  { title: "Reverse Voltage", sortProperty: "reverse_voltage" },
+  { title: "Type", sortProperty: "type" },
+];
