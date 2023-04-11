@@ -73,8 +73,20 @@ export function formatProperty(rawProperty: number, property: string): string {
     return abbreviateNumber(rawProperty, "B", 2, 1024);
   }
 
-  if (property === "voltage") {
-    return rawProperty + " V";
+  if (
+    property === "voltage" ||
+    property === "forward_voltage" ||
+    property === "reverse_voltage"
+  ) {
+    return (
+      rawProperty.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " V"
+    );
+  }
+
+  if (property === "forward_current") {
+    return (
+      rawProperty.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " A"
+    );
   }
 
   return rawProperty.toString();

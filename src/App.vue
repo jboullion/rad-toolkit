@@ -66,7 +66,7 @@
 /**
  * TODO:
  *
- * 1. Setup category constants instead of using strings
+ *
  */
 /**
  * WANTS:
@@ -284,13 +284,11 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
               // split on comma and add each value
               value.split(",").forEach((val) => {
                 const cleanVal = val.trim();
-                //console.log("cleanVal:string", cleanVal);
                 if (!filter.options.includes(cleanVal)) {
                   filter.options.push(cleanVal);
                 }
               });
             } else if (typeof value === "number") {
-              //console.log("cleanVal:number", cleanVal);
               if (!filter.options.includes(value.toString())) {
                 filter.options.push(value.toString());
               }
@@ -299,7 +297,6 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 
               // @ts-ignore
               value.map((val: string) => {
-                //console.log("cleanVal:array", cleanVal);
                 if (!filter.options.includes(val)) {
                   filter.options.push(val);
                 }
@@ -309,7 +306,6 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
             }
           } else {
             // add the value
-            //console.log("cleanVal:cores", cleanVal);
             if (!filter.options.includes(value)) {
               filter.options.push(value);
             }
@@ -507,21 +503,6 @@ async function updateCategory(category: number) {
       if (!value) return;
 
       if (Array.isArray(value)) {
-        // We have one property called interfaces which is an array of objects
-
-        // Do we want to prepare our interfaces here or in the places they are used?
-        // // @ts-ignore
-        // if (value[0] &&  value[0].property) {
-        //   let interfaceArray: string[] = [];
-
-        //   // @ts-ignore
-        //   value.forEach((p: ComponentInterface) => {
-        //     interfaceArray.push(p.property);
-        //   });
-
-        //   value = interfaceArray;
-        // }
-
         // @ts-ignore
         if (value[0] && value[0].property) {
           return;

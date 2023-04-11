@@ -82,7 +82,6 @@ export const interfaceICProperties: ComponentTableProps[] = [
 ];
 
 export const diodeProperties: ComponentTableProps[] = [
-  // foward_current, foward_voltage, reverse_voltage, type
   { title: "Forward Current", sortProperty: "forward_current" },
   { title: "Forward Voltage", sortProperty: "forward_voltage" },
   { title: "Reverse Voltage", sortProperty: "reverse_voltage" },

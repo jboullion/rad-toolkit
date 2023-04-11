@@ -21,7 +21,7 @@ class Component {
 	/**
 	 * Return a list of components 
 	 */
-	public function getComponents($category_id, $limit = 50, $offset = 0){
+	public function getComponents($category_id, $limit = 200, $offset = 0){
 
 		try{
             // Get Components

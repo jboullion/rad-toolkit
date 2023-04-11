@@ -53,7 +53,14 @@
             >
             <span v-else>{{ component.name }}</span>
           </h3>
-          <span><b>Part #:</b> {{ component.partnum }}</span
+          <a
+            v-if="component.url"
+            :href="component.url"
+            target="_blank"
+            @click.stop
+            ><b>Part #:</b> {{ component.partnum }}</a
+          >
+          <span v-else><b>Part #:</b> {{ component.partnum }}</span
           ><br />
           <span><b>Manufacturer:</b> {{ component.manufacturer }}</span>
         </td>
