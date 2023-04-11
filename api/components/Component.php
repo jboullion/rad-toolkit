@@ -103,5 +103,25 @@ class Component {
 		}
 	}
 
+	public function getTestSources(){
+		try{
+			$query = "SELECT * FROM test_sources";
+
+			$stmt = $this->pdo->prepare($query);
+			$stmt->execute();
+
+			$sources = [];
+			while ($source = $stmt->fetchObject())
+			{	
+				$sources[] = $source;
+			}
+
+			return $sources;
+
+		} catch (PDOException $e) {
+			return false;
+		}
+	}
+
 	
 }

@@ -26,6 +26,10 @@ export const commonProperties: ComponentTableProps[] = [
     unit: "MeV-cm2/mg",
     sortProperty: "lut_threshold",
   },
+  {
+    title: "Test Source",
+    sortProperty: "tester_id",
+  },
 ];
 
 // System On Chip (SoC)

@@ -18,6 +18,7 @@
           <ComponentTable
             :components="filteredComponents"
             :properties="currentProperties"
+            :test-sources="testSources"
             @sort="sortComponents"
             @compare="compare = true"
             @compareComponents="setCompareComponents"
@@ -87,6 +88,7 @@ import {
   ComponentInterface,
   ComponentProperties,
   ComponentTableProps,
+  Source,
   defaultComponent,
 } from "@/types/components";
 
@@ -122,10 +124,6 @@ const compare = ref(false);
 const loading = ref(false);
 const search = ref("");
 
-function toggleTheme() {
-  theme.value = theme.value === "light" ? "dark" : "light";
-}
-
 const components = ref<Component[]>([]);
 
 const categories = ref<ComponentCategory[]>([]);
@@ -135,6 +133,7 @@ const currentCategory = ref<ComponentCategory>();
 const showComponent = ref(false);
 const filteredComponents = ref<Component[]>([]);
 const sortOrder = ref(1);
+const testSources = ref<Source[]>([]);
 
 /**
  * Compute our properties and filters based on the current category
@@ -214,6 +213,9 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
 /**
  * SETUP
  */
+function toggleTheme() {
+  theme.value = theme.value === "light" ? "dark" : "light";
+}
 
 onMounted(async () => {
   loading.value = true;
@@ -223,6 +225,12 @@ onMounted(async () => {
     "https://rad-toolkit.nexusaurora.org/api/components/categories.php"
   );
   categories.value = await cat_response.json();
+
+  // setup sources
+  const source_response = await fetch(
+    "https://rad-toolkit.nexusaurora.org/api/components/test-sources.php"
+  );
+  testSources.value = await source_response.json();
 
   loading.value = false;
 

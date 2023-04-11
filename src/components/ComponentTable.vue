@@ -70,7 +70,14 @@
           :class="`component__${property.sortProperty}`"
           @click="$emit('showComponent', component)"
         >
-          <p>
+          <a
+            v-if="property.sortProperty === 'tester_id'"
+            :href="getSourceUrl(component.tester_id)"
+            target="_blank"
+            @click.stop
+            >{{ getSourceName(component.tester_id) }}</a
+          >
+          <p v-else>
             {{ displayComponentProperty(component, property.sortProperty) }}
           </p>
         </td>
@@ -88,12 +95,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Component, ComponentTableProps } from "@/types/components";
+import { Component, ComponentTableProps, Source } from "@/types/components";
 import { displayComponentProperty, displayFileName } from "@/utils/utils";
 
-defineProps<{
+const props = defineProps<{
   components: Component[];
   properties: ComponentTableProps[];
+  testSources: Source[];
 }>();
 
 defineEmits<{
@@ -104,6 +112,16 @@ defineEmits<{
 }>();
 
 const selectedComponents = ref<string[]>([]);
+
+function getSourceUrl(tester_id: number) {
+  const source = props.testSources.find((source) => source.id === tester_id);
+  return source ? source.url : "";
+}
+
+function getSourceName(tester_id: number) {
+  const source = props.testSources.find((source) => source.id === tester_id);
+  return source ? source.name : "";
+}
 </script>
 
 <style>

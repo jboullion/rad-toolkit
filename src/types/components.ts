@@ -11,6 +11,7 @@ export type Component = {
   manufacturer: string;
   properties: ComponentProperties;
   files: string[];
+  tester_id: number;
 };
 
 export type ComponentTableProps = {
@@ -49,6 +50,10 @@ export type ComponentProperties = {
   volatile_memory_capacity: string;
   primary_interface: ComponentInterface;
   secondary_interfaces: ComponentInterface[];
+  forward_voltage: number;
+  reverse_voltage: number;
+  forward_current: number;
+  tester_id: number;
 };
 
 export type ComponentInterface = {
@@ -141,6 +146,16 @@ export const defaultComponent: Component = {
       width: "",
     },
     secondary_interfaces: [],
+    forward_voltage: "",
+    reverse_voltage: "",
+    forward_current: "",
+    tester_id: 0,
   } as unknown as ComponentProperties,
   files: [],
+};
+
+export type Source = {
+  id: number;
+  name: string;
+  url: string;
 };
