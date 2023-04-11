@@ -149,9 +149,9 @@ export const defaultComponent: Component = {
     forward_voltage: "",
     reverse_voltage: "",
     forward_current: "",
-    tester_id: 0,
   } as unknown as ComponentProperties,
   files: [],
+  tester_id: 0,
 };
 
 export type Source = {
