@@ -55,8 +55,14 @@ export function abbreviateNumber(
   ];
 
   const i = Math.floor(Math.log(value) / Math.log(k));
+  let suffix = "";
+  if (i < 0) {
+    suffix = "m" + unit;
+  } else {
+    suffix = sizes[i];
+  }
 
-  return `${parseFloat((value / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  return `${parseFloat((value / Math.pow(k, i)).toFixed(dm))} ${suffix}`;
 }
 
 // determine how to format each property based on its name
@@ -74,19 +80,15 @@ export function formatProperty(rawProperty: number, property: string): string {
   }
 
   if (
-    property === "voltage" ||
     property === "forward_voltage" ||
-    property === "reverse_voltage"
+    property === "reverse_voltage" ||
+    property === "voltage"
   ) {
-    return (
-      rawProperty.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " V"
-    );
+    return abbreviateNumber(rawProperty, "V", 3);
   }
 
   if (property === "forward_current") {
-    return (
-      rawProperty.toLocaleString(undefined, { maximumFractionDigits: 0 }) + " A"
-    );
+    return abbreviateNumber(rawProperty, "A", 3);
   }
 
   return rawProperty.toString();
