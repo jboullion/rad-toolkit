@@ -82,6 +82,7 @@ export enum ComponentCategoryEnum {
   SBC = "SBCs",
   InterfaceIC = "Interface ICs",
   Diodes = "Diodes",
+  Transistors = "Transistors - Bipolar",
 }
 // export enum ComponentCategoryEnum {
 //   Microprocessor = 1,

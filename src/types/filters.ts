@@ -10,6 +10,7 @@ import {
   SBCProperties,
   interfaceICProperties,
   diodeProperties,
+  transistorProperties,
 } from "./properties";
 import { CategoryFilter, ComponentTableProps } from "./components";
 
@@ -51,6 +52,10 @@ export const interfaceICFilters = computed<CategoryFilter[]>(() => {
 
 export const diodeFilters = computed<CategoryFilter[]>(() => {
   return setupFilters(diodeProperties);
+});
+
+export const transistorFilters = computed<CategoryFilter[]>(() => {
+  return setupFilters(transistorProperties);
 });
 
 function setupFilters(properties: ComponentTableProps[]) {

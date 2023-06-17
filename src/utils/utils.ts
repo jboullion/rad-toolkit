@@ -82,12 +82,15 @@ export function formatProperty(rawProperty: number, property: string): string {
   if (
     property === "forward_voltage" ||
     property === "reverse_voltage" ||
-    property === "voltage"
+    property === "voltage" ||
+    property === "Vceo" ||
+    property === "Vcbo" ||
+    property === "Vebo"
   ) {
     return abbreviateNumber(rawProperty, "V", 3);
   }
 
-  if (property === "forward_current") {
+  if (property === "forward_current" || property === "Ic") {
     return abbreviateNumber(rawProperty, "A", 3);
   }
 

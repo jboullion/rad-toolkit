@@ -91,3 +91,11 @@ export const diodeProperties: ComponentTableProps[] = [
   { title: "Reverse Voltage", sortProperty: "reverse_voltage" },
   { title: "Type", sortProperty: "type" },
 ];
+
+export const transistorProperties: ComponentTableProps[] = [
+  { title: "Ic", sortProperty: "Ic" },
+  { title: "Vceo", sortProperty: "Vceo" },
+  { title: "Vcbo", sortProperty: "Vcbo" },
+  { title: "Vebo", sortProperty: "Vebo" },
+  { title: "Type", sortProperty: "type" },
+];
