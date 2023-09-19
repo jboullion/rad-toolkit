@@ -6,7 +6,7 @@
     <div class="hero__overlay">
       <div class="hero__content">
         <h1>Semiconductor Radiation Toolkit</h1>
-        <p>tagline here</p>
+        <!-- <p>tagline here</p> -->
 
         <div class="hero__search-field">
           <v-text-field
