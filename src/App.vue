@@ -2,6 +2,10 @@
   <v-app :theme="theme">
     <Navbar :theme="theme" @toggle-theme="toggleTheme" />
 
+    <Hero />
+
+    <CategoryList :categories="categories" @updateCategory="" />
+
     <v-main>
       <v-container fluid v-if="!loading">
         <Filters
@@ -77,6 +81,8 @@
 import { computed, onMounted, ref } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Filters from "./components/Filters.vue";
+import Hero from "./components/Hero.vue";
+import CategoryList from "./components/CategoryList.vue";
 import ComponentTable from "./components/ComponentTable.vue";
 import ComponentDialog from "./components/ComponentDialog.vue";
 import CompareDialog from "./components/CompareDialog.vue";

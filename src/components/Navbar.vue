@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="bg-black" title="Semiconductor Radiation Toolkit">
+  <v-app-bar class="bg-black">
     <template v-slot:prepend>
       <img
         src="@/assets/logo.jpg"
@@ -12,10 +12,10 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn
+    <!-- <v-btn
       :icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"
       @click="$emit('toggle-theme')"
-    ></v-btn>
+    ></v-btn> -->
   </v-app-bar>
 </template>
 
