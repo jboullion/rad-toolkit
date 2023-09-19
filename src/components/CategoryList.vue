@@ -10,7 +10,11 @@
           sm="6"
           md="4"
         >
-          <v-btn size="x-large" block>
+          <v-btn
+            size="x-large"
+            block
+            @click="$emit('category-selected', category.category_id)"
+          >
             {{ category.name }}
           </v-btn>
         </v-col>
@@ -21,6 +25,10 @@
 
 <script setup lang="ts">
 import { ComponentCategory } from "@/types/components";
+
+defineEmits<{
+  (event: "category-selected", categoryId: number): void;
+}>();
 
 defineProps<{
   categories: ComponentCategory[];

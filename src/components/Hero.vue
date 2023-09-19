@@ -15,7 +15,7 @@
             label="Search"
             density="compact"
             append-inner-icon="mdi-magnify"
-            @input=""
+            @input="$emit('search', search)"
           ></v-text-field>
         </div>
       </div>
@@ -24,13 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const search = ref("");
 
-// const props = defineProps<{
-//   theme: string;
-// }>();
+defineEmits<{
+  (event: "search", search: string): void;
+}>();
 </script>
 
 <style>
@@ -68,12 +68,12 @@ const search = ref("");
 
 .hero__overlay {
   background-color: rgba(0, 0, 0, 0.7);
-  padding: 130px 15px 50px;
+  padding: 80px 15px 60px;
 }
 
 @media (max-width: 786px) {
   .hero__overlay {
-    padding: 100px 15px 50px;
+    padding: 60px 15px 50px;
   }
 
   .hero__content {

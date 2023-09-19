@@ -2,12 +2,15 @@
   <v-app :theme="theme">
     <Navbar :theme="theme" @toggle-theme="toggleTheme" />
 
-    <Hero />
-
-    <CategoryList :categories="categories" @updateCategory="" />
-
     <v-main>
-      <v-container fluid v-if="!loading">
+      <Hero @search="updateSearch" />
+
+      <CategoryList
+        v-if="!currentCategory"
+        :categories="categories"
+        @category-selected="updateCategory"
+      />
+      <v-container fluid v-else-if="!loading">
         <Filters
           :categories="categories"
           :category-filters="categoryFilters"
@@ -348,6 +351,12 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 /**
  * SEARCH
  */
+function updateSearch(newSearch: string) {
+  search.value = newSearch;
+
+  filterComponents({}, search.value);
+}
+
 // const throttledSearch = useThrottleFn(filterComponents, 250);
 function filterComponents(
   filters: { [key: string]: string } = {},
