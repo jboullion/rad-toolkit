@@ -1,5 +1,5 @@
 <template>
-  <div class="category-list">
+  <div class="category-list mb-12">
     <v-container class="">
       <h2 class="text-center">Categories</h2>
       <v-row>

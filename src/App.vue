@@ -3,7 +3,7 @@
     <Navbar :theme="theme" @toggle-theme="toggleTheme" />
 
     <v-main>
-      <Hero @search="updateSearch" />
+      <Hero @search="updateSearch" :showSearch="!!currentCategory" />
 
       <CategoryList
         v-if="!currentCategory"

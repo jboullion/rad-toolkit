@@ -8,7 +8,7 @@
         <h1>Semiconductor Radiation Toolkit</h1>
         <!-- <p>tagline here</p> -->
 
-        <div class="hero__search-field">
+        <div class="hero__search-field" v-if="showSearch">
           <v-text-field
             v-model="search"
             variant="outlined"
@@ -30,6 +30,10 @@ const search = ref("");
 
 defineEmits<{
   (event: "search", search: string): void;
+}>();
+
+defineProps<{
+  showSearch: boolean;
 }>();
 </script>
 
