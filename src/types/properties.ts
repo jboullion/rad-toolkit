@@ -99,3 +99,19 @@ export const transistorProperties: ComponentTableProps[] = [
   { title: "Vebo", sortProperty: "Vebo" },
   { title: "Type", sortProperty: "type" },
 ];
+
+export const jfetProperties: ComponentTableProps[] = [
+  { title: "Id", sortProperty: "Id" },
+  { title: "Vds", sortProperty: "Vds" },
+  { title: "Vgs", sortProperty: "Vgs" },
+  { title: "Gate Cutoff", sortProperty: "gate_cutoff" },
+  { title: "Type", sortProperty: "type" },
+];
+
+export const mosfetProperties: ComponentTableProps[] = [
+  { title: "Id", sortProperty: "Id" },
+  { title: "Vds", sortProperty: "Vds" },
+  { title: "Vgs", sortProperty: "Vgs" },
+  { title: "Gate Cutoff", sortProperty: "gate_cutoff" },
+  { title: "Type", sortProperty: "type" },
+];

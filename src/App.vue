@@ -114,6 +114,8 @@ import {
   interfaceICProperties,
   diodeProperties,
   transistorProperties,
+  jfetProperties,
+  mosfetProperties,
 } from "./types/properties";
 import {
   commonFilters,
@@ -127,6 +129,8 @@ import {
   interfaceICFilters,
   diodeFilters,
   transistorFilters,
+  jfetFilters,
+  mosfetFilters,
 } from "./types/filters";
 import { arrayToCsv, prefixNumber } from "./utils/utils";
 
@@ -175,6 +179,10 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
       return commonProperties.concat(diodeProperties);
     case ComponentCategoryEnum.Transistors:
       return commonProperties.concat(transistorProperties);
+    case ComponentCategoryEnum.JFET:
+      return commonProperties.concat(jfetProperties);
+    case ComponentCategoryEnum.MOSFET:
+      return commonProperties.concat(mosfetProperties);
   }
 
   return commonProperties;
@@ -215,6 +223,12 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
       break;
     case ComponentCategoryEnum.Transistors:
       buildFilters = buildFilters.concat(transistorFilters.value);
+      break;
+    case ComponentCategoryEnum.JFET:
+      buildFilters = buildFilters.concat(jfetFilters.value);
+      break;
+    case ComponentCategoryEnum.MOSFET:
+      buildFilters = buildFilters.concat(mosfetFilters.value);
       break;
     default:
   }
@@ -564,7 +578,6 @@ async function updateCategory(category: number) {
 /**
  * EXPORT
  */
-
 function exportComponents() {
   const filteredComponentArray = JSON.parse(
     JSON.stringify(filteredComponents.value)
