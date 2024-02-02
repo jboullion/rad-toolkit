@@ -6,7 +6,7 @@
     <div class="hero__overlay">
       <div class="hero__content">
         <h1>Semiconductor Radiation Toolkit</h1>
-        <!-- <p>tagline here</p> -->
+        <p>A database of semiconductor radiation test data</p>
 
         <div class="hero__search-field" v-if="showSearch">
           <v-text-field

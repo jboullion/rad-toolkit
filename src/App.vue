@@ -5,11 +5,13 @@
     <v-main>
       <Hero @search="updateSearch" :showSearch="!!currentCategory" />
 
-      <CategoryList
-        v-if="!currentCategory"
-        :categories="categories"
-        @category-selected="updateCategory"
-      />
+      <template v-if="!currentCategory">
+        <CategoryList
+          :categories="categories"
+          @category-selected="updateCategory"
+        />
+        <About />
+      </template>
       <v-container fluid v-else-if="!loading">
         <Filters
           :categories="categories"
@@ -89,6 +91,7 @@ import CategoryList from "./components/CategoryList.vue";
 import ComponentTable from "./components/ComponentTable.vue";
 import ComponentDialog from "./components/ComponentDialog.vue";
 import CompareDialog from "./components/CompareDialog.vue";
+import About from "./components/About.vue";
 import {
   CategoryFilter,
   Component,
@@ -597,13 +600,17 @@ function exportComponents() {
   });
 
   const content = arrayToCsv(filteredComponentArray);
-  var blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
-  var url = URL.createObjectURL(blob);
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const filename = currentCategory.value?.name
+    ? currentCategory.value.name + "_export.csv"
+    : "SRT_export.csv";
 
   // Create a link to download it
   var pom = document.createElement("a");
   pom.href = url;
-  pom.setAttribute("download", "SRT_export.csv");
+  pom.setAttribute("download", filename);
   pom.click();
 }
 

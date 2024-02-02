@@ -36,7 +36,10 @@ defineProps<{
 </script>
 
 <style>
+.category-list {
+  margin-top: 30px;
+}
 .category-list h2 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 </style>

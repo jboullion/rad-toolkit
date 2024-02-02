@@ -12,10 +12,10 @@ export const basicProperties: ComponentTableProps[] = [
 
 export const commonProperties: ComponentTableProps[] = [
   { title: "Package", sortProperty: "package" },
-  { title: "Process Node", sortProperty: "process_node" },
+  // { title: "Process Node", sortProperty: "process_node" },
   { title: "Qualifications", sortProperty: "qualifications" },
   { title: "Voltage", unit: "V", sortProperty: "voltage" },
-  { title: "Cost", sortProperty: "cost" },
+  // { title: "Cost", sortProperty: "cost" },
   {
     title: "Total Dose",
     unit: "rad",

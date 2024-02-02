@@ -79,18 +79,26 @@ export function formatProperty(rawProperty: number, property: string): string {
     return abbreviateNumber(rawProperty, "B", 2, 1024);
   }
 
+  // TODO: Update this to use a Unit property of "V" instead of hardcoding
   if (
     property === "forward_voltage" ||
     property === "reverse_voltage" ||
     property === "voltage" ||
     property === "Vceo" ||
     property === "Vcbo" ||
-    property === "Vebo"
+    property === "Vebo" ||
+    property === "Vds" ||
+    property === "Vgs" ||
+    property === "gate_cutoff"
   ) {
     return abbreviateNumber(rawProperty, "V", 3);
   }
 
-  if (property === "forward_current" || property === "Ic") {
+  if (
+    property === "forward_current" ||
+    property === "Ic" ||
+    property === "Id"
+  ) {
     return abbreviateNumber(rawProperty, "A", 3);
   }
 
