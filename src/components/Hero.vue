@@ -2,11 +2,14 @@
   <div
     class="hero"
     style="background-image: url('/images/circuit-board-6522546_1280.webp')"
+    :class="{ 'hero--search': showSearch }"
   >
     <div class="hero__overlay">
       <div class="hero__content">
         <h1>Semiconductor Radiation Toolkit</h1>
-        <p>A database of semiconductor radiation test data</p>
+        <p v-if="!showSearch">
+          A database of semiconductor radiation test data
+        </p>
 
         <div class="hero__search-field" v-if="showSearch">
           <v-text-field
@@ -42,6 +45,10 @@ defineProps<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.hero.hero--search .hero__overlay {
+  padding: 20px 15px;
 }
 
 .hero__content {

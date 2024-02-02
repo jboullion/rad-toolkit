@@ -655,7 +655,7 @@ function updateURLParameter(
 
 <style>
 .v-container {
-  padding-top: 40px;
+  padding-top: 30px;
 }
 
 .pointer {

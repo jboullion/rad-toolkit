@@ -1,5 +1,5 @@
 <template>
-  <v-table>
+  <v-table class="mt-7">
     <thead>
       <tr>
         <th>
@@ -138,7 +138,7 @@ function getSourceName(tester_id: number) {
 }
 
 .v-table .v-table__wrapper {
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 350px);
   overflow-y: auto;
 }
 
