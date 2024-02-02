@@ -81,12 +81,20 @@
             {{ displayComponentProperty(component, property.sortProperty) }}
           </p>
         </td>
-        <td class="component__files">
-          <span v-for="file in component.files" class="d-block"
+        <td
+          class="pointer component__files"
+          @click="$emit('showComponent', component)"
+        >
+          <span v-if="component.files.length"
+            >{{ component.files.length }} file{{
+              Math.abs(component.files.length) != 1 ? "s" : ""
+            }}</span
+          >
+          <!-- <span v-for="file in component.files" class="d-block"
             ><a :href="file" target="_blank">{{
               displayFileName(file)
             }}</a></span
-          >
+          > -->
         </td>
       </tr>
     </tbody>
