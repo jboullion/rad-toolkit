@@ -119,6 +119,7 @@ import {
   transistorProperties,
   jfetProperties,
   mosfetProperties,
+  transistorHideProperties,
 } from "./types/properties";
 import {
   commonFilters,
@@ -181,11 +182,17 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
     case ComponentCategoryEnum.Diodes:
       return commonProperties.concat(diodeProperties);
     case ComponentCategoryEnum.Transistors:
-      return commonProperties.concat(transistorProperties);
+      return commonProperties
+        .filter((prop) => !transistorHideProperties.includes(prop.sortProperty))
+        .concat(transistorProperties);
     case ComponentCategoryEnum.JFET:
-      return commonProperties.concat(jfetProperties);
+      return commonProperties
+        .filter((prop) => !transistorHideProperties.includes(prop.sortProperty))
+        .concat(jfetProperties);
     case ComponentCategoryEnum.MOSFET:
-      return commonProperties.concat(mosfetProperties);
+      return commonProperties
+        .filter((prop) => !transistorHideProperties.includes(prop.sortProperty))
+        .concat(mosfetProperties);
   }
 
   return commonProperties;

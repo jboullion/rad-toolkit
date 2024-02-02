@@ -115,3 +115,5 @@ export const mosfetProperties: ComponentTableProps[] = [
   { title: "Gate Cutoff", sortProperty: "gate_cutoff" },
   { title: "Type", sortProperty: "type" },
 ];
+
+export const transistorHideProperties: string[] = ["voltage"];
