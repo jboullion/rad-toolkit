@@ -3,7 +3,16 @@
     <Navbar :theme="theme" @toggle-theme="toggleTheme" />
 
     <v-main>
-      <v-container fluid v-if="!loading">
+      <Hero @search="updateSearch" :showSearch="!!currentCategory" />
+
+      <template v-if="!currentCategory">
+        <CategoryList
+          :categories="categories"
+          @category-selected="updateCategory"
+        />
+        <About />
+      </template>
+      <v-container fluid v-else-if="!loading">
         <Filters
           :categories="categories"
           :category-filters="categoryFilters"
@@ -77,9 +86,12 @@
 import { computed, onMounted, ref } from "vue";
 import Navbar from "./components/Navbar.vue";
 import Filters from "./components/Filters.vue";
+import Hero from "./components/Hero.vue";
+import CategoryList from "./components/CategoryList.vue";
 import ComponentTable from "./components/ComponentTable.vue";
 import ComponentDialog from "./components/ComponentDialog.vue";
 import CompareDialog from "./components/CompareDialog.vue";
+import About from "./components/About.vue";
 import {
   CategoryFilter,
   Component,
@@ -105,6 +117,8 @@ import {
   interfaceICProperties,
   diodeProperties,
   transistorProperties,
+  jfetProperties,
+  mosfetProperties,
 } from "./types/properties";
 import {
   commonFilters,
@@ -118,6 +132,8 @@ import {
   interfaceICFilters,
   diodeFilters,
   transistorFilters,
+  jfetFilters,
+  mosfetFilters,
 } from "./types/filters";
 import { arrayToCsv, prefixNumber } from "./utils/utils";
 
@@ -166,6 +182,10 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
       return commonProperties.concat(diodeProperties);
     case ComponentCategoryEnum.Transistors:
       return commonProperties.concat(transistorProperties);
+    case ComponentCategoryEnum.JFET:
+      return commonProperties.concat(jfetProperties);
+    case ComponentCategoryEnum.MOSFET:
+      return commonProperties.concat(mosfetProperties);
   }
 
   return commonProperties;
@@ -206,6 +226,12 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
       break;
     case ComponentCategoryEnum.Transistors:
       buildFilters = buildFilters.concat(transistorFilters.value);
+      break;
+    case ComponentCategoryEnum.JFET:
+      buildFilters = buildFilters.concat(jfetFilters.value);
+      break;
+    case ComponentCategoryEnum.MOSFET:
+      buildFilters = buildFilters.concat(mosfetFilters.value);
       break;
     default:
   }
@@ -342,6 +368,12 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
 /**
  * SEARCH
  */
+function updateSearch(newSearch: string) {
+  search.value = newSearch;
+
+  filterComponents({}, search.value);
+}
+
 // const throttledSearch = useThrottleFn(filterComponents, 250);
 function filterComponents(
   filters: { [key: string]: string } = {},
@@ -549,7 +581,6 @@ async function updateCategory(category: number) {
 /**
  * EXPORT
  */
-
 function exportComponents() {
   const filteredComponentArray = JSON.parse(
     JSON.stringify(filteredComponents.value)
@@ -569,13 +600,17 @@ function exportComponents() {
   });
 
   const content = arrayToCsv(filteredComponentArray);
-  var blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
-  var url = URL.createObjectURL(blob);
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const filename = currentCategory.value?.name
+    ? currentCategory.value.name + "_export.csv"
+    : "SRT_export.csv";
 
   // Create a link to download it
   var pom = document.createElement("a");
   pom.href = url;
-  pom.setAttribute("download", "SRT_export.csv");
+  pom.setAttribute("download", filename);
   pom.click();
 }
 

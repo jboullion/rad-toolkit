@@ -1,7 +1,7 @@
 <template>
   <div id="search-area" class="mb-5">
     <v-row>
-      <v-col cols="12" sm="4">
+      <v-col cols="12" sm="6" md="4">
         <v-select
           v-model="selectedCategory"
           :items="categoryItems"
@@ -12,7 +12,7 @@
           @update:modelValue="updateCategory"
         ></v-select>
       </v-col>
-      <v-col cols="12" sm="4" v-if="currentCategory">
+      <!-- <v-col cols="12" sm="4" v-if="currentCategory">
         <v-text-field
           v-model="search"
           variant="outlined"
@@ -21,8 +21,15 @@
           append-inner-icon="mdi-magnify"
           @input="filterComponents"
         ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="2" v-if="categoryFilters.length">
+      </v-col> -->
+      <v-col
+        cols="12"
+        sm="3"
+        md="2"
+        offset="0"
+        offset-md="4"
+        v-if="categoryFilters.length"
+      >
         <v-btn
           color="red"
           :variant="showFilters ? 'tonal' : 'flat'"
@@ -32,7 +39,7 @@
           Filters <v-icon large class="ml-2"> mdi-filter </v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="12" sm="2" v-if="categoryFilters.length">
+      <v-col cols="12" sm="3" md="2" v-if="categoryFilters.length">
         <v-btn color="red" variant="flat" @click="$emit('export')" block>
           Download <v-icon large class="ml-2"> mdi-download </v-icon>
         </v-btn>

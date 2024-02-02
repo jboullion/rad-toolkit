@@ -11,6 +11,8 @@ import {
   interfaceICProperties,
   diodeProperties,
   transistorProperties,
+  jfetProperties,
+  mosfetProperties,
 } from "./properties";
 import { CategoryFilter, ComponentTableProps } from "./components";
 
@@ -56,6 +58,14 @@ export const diodeFilters = computed<CategoryFilter[]>(() => {
 
 export const transistorFilters = computed<CategoryFilter[]>(() => {
   return setupFilters(transistorProperties);
+});
+
+export const jfetFilters = computed<CategoryFilter[]>(() => {
+  return setupFilters(jfetProperties);
+});
+
+export const mosfetFilters = computed<CategoryFilter[]>(() => {
+  return setupFilters(mosfetProperties);
 });
 
 function setupFilters(properties: ComponentTableProps[]) {

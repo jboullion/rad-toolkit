@@ -12,10 +12,10 @@ export const basicProperties: ComponentTableProps[] = [
 
 export const commonProperties: ComponentTableProps[] = [
   { title: "Package", sortProperty: "package" },
-  { title: "Process Node", sortProperty: "process_node" },
+  // { title: "Process Node", sortProperty: "process_node" },
   { title: "Qualifications", sortProperty: "qualifications" },
   { title: "Voltage", unit: "V", sortProperty: "voltage" },
-  { title: "Cost", sortProperty: "cost" },
+  // { title: "Cost", sortProperty: "cost" },
   {
     title: "Total Dose",
     unit: "rad",
@@ -97,5 +97,21 @@ export const transistorProperties: ComponentTableProps[] = [
   { title: "Vceo", sortProperty: "Vceo" },
   { title: "Vcbo", sortProperty: "Vcbo" },
   { title: "Vebo", sortProperty: "Vebo" },
+  { title: "Type", sortProperty: "type" },
+];
+
+export const jfetProperties: ComponentTableProps[] = [
+  { title: "Id", sortProperty: "Id" },
+  { title: "Vds", sortProperty: "Vds" },
+  { title: "Vgs", sortProperty: "Vgs" },
+  { title: "Gate Cutoff", sortProperty: "gate_cutoff" },
+  { title: "Type", sortProperty: "type" },
+];
+
+export const mosfetProperties: ComponentTableProps[] = [
+  { title: "Id", sortProperty: "Id" },
+  { title: "Vds", sortProperty: "Vds" },
+  { title: "Vgs", sortProperty: "Vgs" },
+  { title: "Gate Cutoff", sortProperty: "gate_cutoff" },
   { title: "Type", sortProperty: "type" },
 ];
