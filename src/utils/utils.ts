@@ -97,7 +97,8 @@ export function formatProperty(rawProperty: number, property: string): string {
   if (
     property === "forward_current" ||
     property === "Ic" ||
-    property === "Id"
+    property === "Id" ||
+    property === "output_current"
   ) {
     return abbreviateNumber(rawProperty, "A", 3);
   }
