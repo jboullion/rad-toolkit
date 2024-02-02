@@ -136,7 +136,7 @@ import {
   jfetFilters,
   mosfetFilters,
 } from "./types/filters";
-import { arrayToCsv, prefixNumber } from "./utils/utils";
+import { arrayToCsv, prefixNumber, sortByNumericValue } from "./utils/utils";
 
 const theme = ref("dark");
 const compare = ref(false);
@@ -246,6 +246,8 @@ const categoryFilters = computed<CategoryFilter[]>(() => {
   buildFilters.forEach((filter) => (filter.options = []));
 
   buildFilters = populateFilterOptions(buildFilters);
+
+  buildFilters.forEach((filter) => filter.options.sort(sortByNumericValue));
 
   return buildFilters;
 });
@@ -362,7 +364,7 @@ function populateFilterOptions(newFilters: CategoryFilter[]): CategoryFilter[] {
       }
 
       // sort the options
-      filter.options.sort();
+      // filter.options.sort();
     });
   });
 

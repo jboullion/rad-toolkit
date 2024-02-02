@@ -168,3 +168,14 @@ export function displayComponentProperty(
 export function displayFileName(file: string): string {
   return file.split("/").pop() || "";
 }
+
+export const sortByNumericValue = (a: string, b: string): number => {
+  const numericA = parseFloat(a);
+  const numericB = parseFloat(b);
+
+  if (isNaN(numericA) || isNaN(numericB)) {
+    return a.localeCompare(b);
+  }
+
+  return numericA - numericB;
+};
