@@ -186,4 +186,10 @@ function getSourceName(tester_id: number) {
 .v-input__details {
   display: none;
 }
+
+@media (max-width: 786px) {
+  .v-table .v-table__wrapper {
+    max-height: calc(100vh - 200px);
+  }
+}
 </style>

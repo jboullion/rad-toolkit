@@ -44,7 +44,11 @@ class Component {
 
 			$components = [];
 			while ($component = $component_stmt->fetchObject()){
-				$component->properties = json_decode($component->properties);
+				if($component->properties) {
+					$component->properties = json_decode($component->properties);
+				} else {
+					$component->properties = [];
+				}
 				// TODO: Ideally these files would be returned on the initial query. May be able to do a subquery.
 				$component->files = $this->getComponentFiles($component->component_id);
 				$components[] = $component;
