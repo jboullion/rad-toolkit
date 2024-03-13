@@ -180,7 +180,9 @@ const currentProperties = computed<ComponentTableProps[]>(() => {
     case ComponentCategoryEnum.InterfaceIC:
       return commonProperties.concat(interfaceICProperties);
     case ComponentCategoryEnum.Diodes:
-      return commonProperties.concat(diodeProperties);
+      return commonProperties
+        .filter((prop) => !transistorHideProperties.includes(prop.sortProperty))
+        .concat(diodeProperties);
     case ComponentCategoryEnum.Transistors:
       return commonProperties
         .filter((prop) => !transistorHideProperties.includes(prop.sortProperty))
