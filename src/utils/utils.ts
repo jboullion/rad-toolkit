@@ -171,11 +171,26 @@ export function displayFileName(file: string): string {
 }
 
 export const sortByNumericValue = (a: string, b: string): number => {
-  const numericA = parseFloat(a);
-  const numericB = parseFloat(b);
+  return sortProperties(a, b);
+};
+
+export const sortProperties = (a: string, b: string): number => {
+  const cleanA = a.replace(">", "").replace("<", "").replace("~", "");
+  const cleanB = b.replace(">", "").replace("<", "").replace("~", "");
+
+  let numericA = parseFloat(cleanA);
+  let numericB = parseFloat(cleanB);
 
   if (isNaN(numericA) || isNaN(numericB)) {
     return a.localeCompare(b);
+  }
+
+  if (a.includes(">")) {
+    numericA++;
+  }
+
+  if (b.includes(">")) {
+    numericB++;
   }
 
   return numericA - numericB;

@@ -28,6 +28,8 @@
             :components="filteredComponents"
             :properties="currentProperties"
             :test-sources="testSources"
+            :sort-order="sortOrder"
+            :sort-property="sortProperty"
             @sort="sortComponents"
             @compare="compare = true"
             @compareComponents="setCompareComponents"
@@ -136,7 +138,12 @@ import {
   jfetFilters,
   mosfetFilters,
 } from "./types/filters";
-import { arrayToCsv, prefixNumber, sortByNumericValue } from "./utils/utils";
+import {
+  arrayToCsv,
+  prefixNumber,
+  sortByNumericValue,
+  sortProperties,
+} from "./utils/utils";
 
 const theme = ref("dark");
 const compare = ref(false);
@@ -152,6 +159,7 @@ const currentCategory = ref<ComponentCategory>();
 const showComponent = ref(false);
 const filteredComponents = ref<Component[]>([]);
 const sortOrder = ref(1);
+const sortProperty = ref("");
 const testSources = ref<Source[]>([]);
 
 /**
@@ -493,27 +501,63 @@ function filterCategories(selectedCategory: number) {
 }
 
 function sortComponents(property: string) {
+  //update our sort order depending on the property
+  if (sortProperty.value === property) {
+    sortOrder.value = sortOrder.value * -1;
+  } else {
+    sortOrder.value = 1;
+  }
+
+  sortProperty.value = property;
+
   filteredComponents.value = filteredComponents.value.sort((a, b) => {
-    if (
-      a[property as keyof Component] < b[property as keyof Component] ||
-      a.properties[property as keyof ComponentProperties] <
-        b.properties[property as keyof ComponentProperties]
-    ) {
+    let aProperty = "";
+    let bProperty = "";
+
+    if (property === "tester_id") {
+      aProperty = getSourceName(a.tester_id);
+      bProperty = getSourceName(b.tester_id);
+    } else {
+      if (a[property as keyof Component]) {
+        aProperty = a[property as keyof Component] as string;
+      }
+
+      if (b[property as keyof Component]) {
+        bProperty = b[property as keyof Component] as string;
+      }
+
+      if (
+        property === "partnum" ||
+        property === "manufacturer" ||
+        property === "description" ||
+        property === "name"
+      ) {
+        return aProperty.localeCompare(bProperty) * sortOrder.value;
+      }
+    }
+
+    if (a.properties[property as keyof ComponentProperties]) {
+      aProperty = a.properties[property as keyof ComponentProperties] as string;
+    }
+
+    if (b.properties[property as keyof ComponentProperties]) {
+      bProperty = b.properties[property as keyof ComponentProperties] as string;
+    }
+
+    if (aProperty && !bProperty) {
       return -1 * sortOrder.value;
     }
 
-    if (
-      a[property as keyof Component] > b[property as keyof Component] ||
-      a.properties[property as keyof ComponentProperties] >
-        b.properties[property as keyof ComponentProperties]
-    ) {
+    if (!aProperty && bProperty) {
       return 1 * sortOrder.value;
     }
 
-    return 0;
-  });
+    if (!aProperty && !bProperty) {
+      return 0;
+    }
 
-  sortOrder.value = sortOrder.value * -1;
+    return sortProperties(aProperty, bProperty) * sortOrder.value;
+  });
 }
 
 /**
@@ -652,6 +696,16 @@ function updateURLParameter(
   }
 
   window.history.replaceState("", "", newUrl);
+}
+
+function getSourceUrl(tester_id: number) {
+  const source = testSources.value.find((source) => source.id === tester_id);
+  return source ? source.url : "";
+}
+
+function getSourceName(tester_id: number) {
+  const source = testSources.value.find((source) => source.id === tester_id);
+  return source ? source.name : "";
 }
 </script>
 

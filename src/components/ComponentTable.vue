@@ -12,7 +12,23 @@
             {{ selectedComponents.length }}</v-btn
           >
         </th>
-        <th class="text-left" @click="$emit('sort', 'name')">Name</th>
+        <th class="text-left" @click="$emit('sort', 'name')">
+          Name
+          <v-icon
+            v-if="sortProperty == 'name' && sortOrder > 0"
+            large
+            class="ms-2"
+          >
+            mdi-sort-ascending
+          </v-icon>
+          <v-icon
+            v-else-if="sortProperty == 'name' && sortOrder < 0"
+            large
+            class="ms-2"
+          >
+            mdi-sort-descending
+          </v-icon>
+        </th>
         <th
           v-for="property in properties"
           class="text-left"
@@ -20,6 +36,21 @@
         >
           {{ property.title }}
           {{ property.unit ? "(" + property.unit + ")" : "" }}
+
+          <v-icon
+            v-if="sortProperty == property.sortProperty && sortOrder > 0"
+            large
+            class="ms-2"
+          >
+            mdi-sort-ascending
+          </v-icon>
+          <v-icon
+            v-else-if="sortProperty == property.sortProperty && sortOrder < 0"
+            large
+            class="ms-2"
+          >
+            mdi-sort-descending
+          </v-icon>
         </th>
         <th>Files</th>
       </tr>
@@ -110,6 +141,8 @@ const props = defineProps<{
   components: Component[];
   properties: ComponentTableProps[];
   testSources: Source[];
+  sortOrder: number;
+  sortProperty: string;
 }>();
 
 defineEmits<{
